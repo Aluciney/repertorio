@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { CifraListar, CifraVisualizar } from './pages/Cifra';
+import { MusicaListar, MusicaVisualizar } from './pages/Musica';
 import { Repertorio } from './pages/Repertorio';
 
 const Stack = createNativeStackNavigator();
@@ -10,8 +10,8 @@ export const Routes: React.FC = () => {
 	const StackRepertorio = () => (
 		<Stack.Navigator>
 			<Stack.Screen name="Repertorio" component={Repertorio} />
-			<Stack.Screen name="CifraListar" component={CifraListar} />
-			<Stack.Screen name="CifraVisualizar" component={CifraVisualizar} />
+			<Stack.Screen name="MusicaListar" component={MusicaListar} />
+			<Stack.Screen name="MusicaVisualizar" component={MusicaVisualizar} />
 		</Stack.Navigator>
 	);
 
