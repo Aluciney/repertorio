@@ -51,12 +51,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 
 	return (
 		<Modal
-			presentationStyle="formSheet"
 			visible={show}
 			onRequestClose={() => setShow(false)}
+			animationType="slide"
+			presentationStyle="formSheet"
 		>
-			<View>
-				<Text>Digite algo:</Text>
+			<View className="flex-1 bg-gray-800">
 				<Controller
 					name="nome"
 					control={control}
@@ -73,7 +73,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						/>
 					)}
 				/>
-				
+
 			</View>
 		</Modal>
 	);
