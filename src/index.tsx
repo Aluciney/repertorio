@@ -5,7 +5,7 @@ import { Routes } from './routes';
 
 export const App: React.FC = () => {
 	return (
-		<View>
+		<View className="flex-1">
 			<StatusBar translucent style="dark" />
 			<Routes />
 			<FlashMessage floating duration={5000} />

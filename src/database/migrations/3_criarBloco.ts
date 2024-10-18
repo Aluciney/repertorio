@@ -1,15 +1,18 @@
-import { Knex } from 'knex';
+import { Database } from '../../database';
 
-export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('bloco', (table) => {
-    table.increments('id').primary();
-    table.integer('id_repertorio').notNullable().unsigned().references('id').inTable('repertorio').onDelete('CASCADE').onUpdate('CASCADE');
-    table.string('nome').notNullable();
-    table.integer('ordem').notNullable();
-    table.dateTime('data_criacao').notNullable().defaultTo(knex.fn.now());
-  });
+export async function up(): Promise<void> {
+  return Database.execAsync(`
+    create table bloco (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_repertorio INTEGER NOT NULL,
+      nome TEXT NOT NULL,
+      ordem INTEGER NOT NULL,
+      data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (id_repertorio) REFERENCES repertorio (id)
+    )
+  `);
 }
 
-export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable('bloco');
+export async function down(): Promise<void> {
+  return Database.execAsync(`drop table bloco`);
 }

@@ -1,16 +1,21 @@
-import { Knex } from 'knex';
+import { Database } from '../../database';
 
-export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('musica_repertorio', (table) => {
-    table.increments('id').primary();
-    table.integer('id_musica').notNullable().unsigned().references('id').inTable('musica').onDelete('CASCADE').onUpdate('CASCADE');
-    table.integer('id_repertorio').notNullable().unsigned().references('id').inTable('repertorio').onDelete('CASCADE').onUpdate('CASCADE');
-    table.integer('id_bloco').unsigned().references('id').inTable('bloco').onDelete('CASCADE').onUpdate('CASCADE');
-    table.integer('ordem').notNullable();
-    table.dateTime('data_criacao').notNullable().defaultTo(knex.fn.now());
-  });
+export async function up(): Promise<void> {
+  return Database.execAsync(`
+    create table musica_repertorio (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_musica INTEGER NOT NULL,
+      id_repertorio INTEGER NOT NULL,
+      id_bloco INTEGER,
+      ordem INTEGER,
+      data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (id_musica) REFERENCES musica (id),
+      FOREIGN KEY (id_repertorio) REFERENCES repertorio (id),
+      FOREIGN KEY (id_bloco) REFERENCES bloco (id)
+    )
+  `);
 }
 
-export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable('musica_repertorio');
+export async function down(): Promise<void> {
+  return Database.execAsync(`drop table musica_repertorio`);
 }

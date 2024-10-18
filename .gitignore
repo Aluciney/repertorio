@@ -7,7 +7,7 @@ node_modules/
 .expo/
 dist/
 web-build/
-src/database/mydb.sqlite
+src/database/mydb.db
 
 # Native
 *.orig.*

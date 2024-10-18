@@ -1,7 +1,4 @@
+import React from 'react';
 import { App } from './src';
-
-export default function Index() {
-  return (
-    <App />
-  );
-}
+const Index: React.FC = () => <App />;
+export default Index;
