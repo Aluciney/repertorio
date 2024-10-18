@@ -2,7 +2,7 @@ import { Database } from '../../database';
 
 export async function up(): Promise<void> {
   return Database.execAsync(`
-    create table bloco (
+    create table if not exists bloco (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       id_repertorio INTEGER NOT NULL,
       nome TEXT NOT NULL,
