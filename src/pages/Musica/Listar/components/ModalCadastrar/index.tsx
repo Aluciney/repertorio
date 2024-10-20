@@ -2,9 +2,11 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
-import { InputText } from '../../../../components/InputText';
+import { InputText } from '../../../../../components/InputText';
 import { useState } from 'react';
-import { RepertorioDAO } from '../../../../dao/RepertorioDAO';
+import { RepertorioDAO } from '../../../../../dao/RepertorioDAO';
+import { MusicaRepertorioDAO } from '../../../../../dao/MusicaRepertorioDAO';
+import { MusicaDAO } from '../../../../../dao/MusicaDAO';
 
 const schema = Yup.object().shape({
 	nome: Yup.string().required('Campo obrigatório').min(4, 'No mínimo 4 caracteres'),
@@ -26,7 +28,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		const { isConfirmed } = await new Promise<{ isConfirmed: boolean }>((resolve) => {
 			Alert.alert(
-				"Cadastrar repertório",
+				"Cadastrar musica",
 				"Tem certeza que deseja solicitar?",
 				[
 					{
@@ -45,7 +47,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			);
 		});
 		if (isConfirmed) {
-			await RepertorioDAO.cadastrar({ nome: data.nome, ordem: 1 });
+			await MusicaDAO.cadastrar({ nome: data.nome, cifra: '' });
 			callback();
 			reset();
 			setShow(false);
@@ -68,7 +70,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 							<InputText
 								label="Nome"
 								classNameContainer="flex-1"
-								placeholder="Escreva o nome para o repertório"
+								placeholder="Escreva o nome da música"
 								onChangeText={field.onChange}
 								value={field.value}
 								error={error?.message}

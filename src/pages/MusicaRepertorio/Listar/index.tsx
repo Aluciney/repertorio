@@ -1,21 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Alert, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { RepertorioDAO } from '../../dao/RepertorioDAO';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
+import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 
-export const Repertorio: React.FC = () => {
+interface MusicaRepertorioLista extends MusicaRepertorio {
+	id_musica: number;
+	nome: string;
+}
+
+export const Listar: React.FC = () => {
+	const { params } = useRoute();
+	const { id } = params as { id: number; };
 	const [loading, setLoading] = useState(true);
-	const [repertorios, setRepertorios] = useState<Repertorio[]>([]);
+	const [musicas, setMusicas] = useState<MusicaRepertorioLista[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 
 	async function initialLoading() {
 		setLoading(true);
-		const repertorios_ = await RepertorioDAO.listar();
-		setRepertorios(repertorios_);
+		const musicas_ = await MusicaRepertorioDAO.listar({ id_repertorio: id });
+		setMusicas(musicas_);
 		setLoading(false);
 	}
 
@@ -30,18 +38,17 @@ export const Repertorio: React.FC = () => {
 					style={{ paddingRight: 10 }}
 					onPress={() => setShowModalCadastrar(true)}
 				>
-					<AntDesign name="addfolder" size={22} color="black" />
+					<MaterialCommunityIcons name="music-note-plus" size={24} color="black" />
 				</TouchableOpacity>
 			)
 		};
 		setOptions(options);
 	}, []);
 
-
 	return (
 		<View>
 			<FlatList
-				data={repertorios}
+				data={musicas}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
@@ -50,14 +57,15 @@ export const Repertorio: React.FC = () => {
 				renderItem={({ item }) => (
 					<TouchableOpacity
 						className="p-4 flex-row gap-3 items-center"
-						onPress={() => navigate('MusicaRepertorioListar', { id: item.id })}
+						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica })}
 					>
-						<AntDesign name="folder1" size={20} color="black" />
+						<Ionicons name="musical-notes-outline" size={20} color="black" />
 						<Text className="text-lg">{item.nome}</Text>
 					</TouchableOpacity>
 				)}
 			/>
 			<ModalCadastrar
+				id_repertorio={id}
 				show={showModalCadastrar}
 				setShow={setShowModalCadastrar}
 				callback={initialLoading}
