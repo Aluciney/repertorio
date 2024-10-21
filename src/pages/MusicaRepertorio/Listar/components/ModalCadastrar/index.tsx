@@ -21,7 +21,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 
 	async function initialLoading() {
 		setLoading(true);
-		const musicas_ = await MusicaDAO.listar({}) as any;
+		const musicas_ = await MusicaDAO.listar() as any;
 		setMusicas(musicas_);
 		setLoading(false);
 	}
@@ -31,43 +31,21 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	}, []);
 
 	useEffect(() => {
-		if(show){
+		if (show) {
 			setMusicasSelecionadas([]);
 		}
-	},[show]);
+	}, [show]);
 
 	const onSubmit = async () => {
-		const { isConfirmed } = await new Promise<{ isConfirmed: boolean }>((resolve) => {
-			Alert.alert(
-				"Cadastrar musica",
-				"Tem certeza que deseja cadastrar?",
-				[
-					{
-						text: "Não", onPress: () => {
-							resolve({ isConfirmed: false })
-						}
-					},
-					{
-						text: "Sim",
-						onPress: () => {
-							resolve({ isConfirmed: true })
-						},
-					},
-				],
-				{ cancelable: false }
-			);
-		});
-		if (isConfirmed) {
-			for (var num = 0; num < musicasSelecionadas.length; num++) {
-				await MusicaRepertorioDAO.cadastrar({
-					id_repertorio,
-					id_musica: musicasSelecionadas[num].id,
-					ordem: 1
-				});
-			}
-			callback();
-			setShow(false);
+		for (var num = 0; num < musicasSelecionadas.length; num++) {
+			await MusicaRepertorioDAO.cadastrar({
+				id_repertorio,
+				id_musica: musicasSelecionadas[num].id,
+				ordem: 1
+			});
 		}
+		callback();
+		setShow(false);
 	}
 
 	function toogleSelectMusica(musica: Musica) {

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
@@ -27,9 +29,11 @@ export const Listar: React.FC = () => {
 		setLoading(false);
 	}
 
-	useEffect(() => {
-		initialLoading();
-	}, []);
+	useFocusEffect(
+    useCallback(() => {
+      initialLoading();
+    }, [])
+  );
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
@@ -45,24 +49,83 @@ export const Listar: React.FC = () => {
 		setOptions(options);
 	}, []);
 
+	const renderLeftActions = (id: number) => (
+		<TouchableOpacity
+			onPress={() => handlerDeleteMusicaRepertorio(id)}
+			className="bg-red-500 items-center justify-center px-4"
+		>
+			<Ionicons name="trash-outline" size={22} color="#FFF" />
+		</TouchableOpacity>
+	);
+
+	const renderItem = useCallback(
+		({ item, drag, isActive }: RenderItemParams<MusicaRepertorioLista>) => {
+			return (
+				<Swipeable 
+					renderLeftActions={() => renderLeftActions(item.id)}
+				>
+					<TouchableOpacity
+						className={`p-4 flex-row gap-3 items-center ${isActive ? 'bg-blue-100' : ''}`}
+						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
+						onLongPress={drag}
+					>
+						<Ionicons name="musical-notes-outline" size={20} color="black" />
+						<Text className="text-lg">{item.nome}</Text>
+					</TouchableOpacity>
+				</Swipeable>
+			);
+		},
+		[]
+	);
+
+	async function handlerDeleteMusicaRepertorio(id: number) {
+		const { isConfirmed } = await new Promise<{ isConfirmed: boolean }>((resolve) => {
+			Alert.alert(
+				"Deletar música do repertório",
+				"Tem certeza que deseja deletar?",
+				[
+					{
+						text: "Não", onPress: () => {
+							resolve({ isConfirmed: false })
+						}
+					},
+					{
+						text: "Sim",
+						onPress: () => {
+							resolve({ isConfirmed: true })
+						},
+					},
+				],
+				{ cancelable: false }
+			);
+		});
+		if (isConfirmed) {
+			await MusicaRepertorioDAO.deletar({ id });
+			initialLoading();
+		}
+	}
+
+	async function handleUpdateOrdem(musicasOrdenadas: MusicaRepertorioLista[]) {
+		setMusicas(musicasOrdenadas);
+		for (var num = 0; num < musicasOrdenadas.length; num++) {
+			await MusicaRepertorioDAO.atualizarOrdem({
+				id: musicasOrdenadas[num].id,
+				ordem: num + 1
+			});
+		}
+	}
+
 	return (
 		<View>
-			<FlatList
+			<DraggableFlatList
 				data={musicas}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
 					<View className='h-[1px] w-full bg-gray-300'></View>
 				)}
-				renderItem={({ item }) => (
-					<TouchableOpacity
-						className="p-4 flex-row gap-3 items-center"
-						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
-					>
-						<Ionicons name="musical-notes-outline" size={20} color="black" />
-						<Text className="text-lg">{item.nome}</Text>
-					</TouchableOpacity>
-				)}
+				renderItem={renderItem}
+				onDragEnd={({ data }) => handleUpdateOrdem(data)}
 			/>
 			<ModalCadastrar
 				id_repertorio={id}

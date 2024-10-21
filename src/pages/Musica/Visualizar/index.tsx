@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Text, TouchableOpacity, ScrollView, StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 
 import { MusicaDAO } from '../../../dao/MusicaDAO';
 
@@ -43,9 +42,11 @@ export const Visualizar: React.FC = () => {
 		setLoading(false);
 	}
 
-	useEffect(() => {
-		initialLoading();
-	}, []);
+	useFocusEffect(
+    useCallback(() => {
+      initialLoading();
+    }, [])
+  );
 
 	const formatarLinhaComNotas = (linha: string): Parte[] => {
 		const partes = linha.split(/(\s+)/);

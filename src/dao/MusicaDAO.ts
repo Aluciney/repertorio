@@ -1,12 +1,8 @@
 import { Database } from '../database';
 
 export const MusicaDAO = {
-	listar: async (props: { id_repertorio?: number; }) => {
-		var where = '';
-		if (!!props.id_repertorio) {
-			where = ` where id_repertorio = ${props.id_repertorio}`;
-		}
-		return Database.getAllAsync(`select * from musica ${where}`);
+	listar: async () => {
+		return Database.getAllAsync(`select * from musica order by nome`);
 	},
 	visualizar: async (props: { id: number; }): Promise<any> => {
 		return Database.getFirstAsync(`select * from musica where id = ?`, [props.id]);
@@ -17,4 +13,7 @@ export const MusicaDAO = {
 	atualizar: async (props: { id: number; nome: string; cifra: string; }) => {
 		return Database.runAsync(`update musica set nome = ?, cifra = ? where id = ?`, [props.nome, props.cifra, props.id]);
 	},
+	deletar: async (props: { id: number; }) => {
+		return Database.runAsync(`delete from musica where id = ?`, [props.id]);
+	}
 };

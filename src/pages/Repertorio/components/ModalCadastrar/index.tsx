@@ -24,39 +24,17 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 	const [loading, setLoading] = useState(false);
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		const { isConfirmed } = await new Promise<{ isConfirmed: boolean }>((resolve) => {
-			Alert.alert(
-				"Cadastrar repertório",
-				"Tem certeza que deseja solicitar?",
-				[
-					{
-						text: "Não", onPress: () => {
-							resolve({ isConfirmed: false })
-						}
-					},
-					{
-						text: "Sim",
-						onPress: () => {
-							resolve({ isConfirmed: true })
-						},
-					},
-				],
-				{ cancelable: false }
-			);
-		});
-		if (isConfirmed) {
-			await RepertorioDAO.cadastrar({ nome: data.nome, ordem: 1 });
-			callback();
-			reset();
-			setShow(false);
-		}
+		await RepertorioDAO.cadastrar({ nome: data.nome, ordem: 1 });
+		callback();
+		reset();
+		setShow(false);
 	}
 
 	useEffect(() => {
-		if(show){
-			reset();
+		if (show) {
+			reset({ nome: '' });
 		}
-	},[show]);
+	}, [show]);
 
 	return (
 		<Modal
@@ -78,6 +56,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 								onChangeText={field.onChange}
 								value={field.value}
 								error={error?.message}
+								autoFocus
 								readOnly={loading}
 								required
 							/>
