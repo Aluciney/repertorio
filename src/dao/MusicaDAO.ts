@@ -4,6 +4,13 @@ export const MusicaDAO = {
 	listar: async () => {
 		return Database.getAllAsync(`select * from musica order by nome`);
 	},
+	listarSemVinculo: async (props: { id_repertorio: number; }) => {
+		return Database.getAllAsync(`
+			select * from musica 
+			where id not in (select id_musica from musica_repertorio where id_repertorio = ?) 
+			order by nome
+		`,[props.id_repertorio]);
+	},
 	visualizar: async (props: { id: number; }): Promise<any> => {
 		return Database.getFirstAsync(`select * from musica where id = ?`, [props.id]);
 	},

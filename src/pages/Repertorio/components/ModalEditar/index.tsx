@@ -14,35 +14,34 @@ const schema = Yup.object().shape({
 type FormData = Yup.InferType<typeof schema>;
 
 interface Props {
-	show: boolean;
-	setShow: (state: boolean) => void;
+	show?: Repertorio;
+	setShow: (state?: Repertorio) => void;
 	callback: () => void;
-	repertorio?: Repertorio;
 }
 
-export const ModalEditar: React.FC<Props> = ({ show, setShow, callback, repertorio }) => {
+export const ModalEditar: React.FC<Props> = ({ show, setShow, callback }) => {
 	const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 	const [loading, setLoading] = useState(false);
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		if (!!repertorio) {
-			await RepertorioDAO.atualizar({ id: repertorio.id, nome: data.nome });
+		if (!!show) {
+			await RepertorioDAO.atualizar({ id: show.id, nome: data.nome });
 			callback();
 			reset();
-			setShow(false);
+			setShow(undefined);
 		}
 	}
 
 	useEffect(() => {
-		if (show && repertorio) {
-			reset({ nome: repertorio.nome });
+		if (!!show) {
+			reset({ nome: show.nome });
 		}
-	}, [show, repertorio]);
+	}, [show]);
 
 	return (
 		<Modal
-			visible={show}
-			onRequestClose={() => setShow(false)}
+			visible={!!show}
+			onRequestClose={() => setShow(undefined)}
 			animationType="slide"
 			presentationStyle="formSheet"
 		>

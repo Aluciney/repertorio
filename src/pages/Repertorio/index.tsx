@@ -1,20 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { RepertorioDAO } from '../../dao/RepertorioDAO';
+import { ModalEditar } from './components/ModalEditar';
 
 export const Repertorio: React.FC = () => {
 	const [loading, setLoading] = useState(true);
 	const [repertorios, setRepertorios] = useState<Repertorio[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
+	const [showModalEditar, setShowModalEditar] = useState<Repertorio>();
+	const { showActionSheetWithOptions } = useActionSheet();
+	const [search,setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -91,6 +96,7 @@ export const Repertorio: React.FC = () => {
 						<TouchableOpacity
 							className="p-4 flex-row flex-1 gap-3 items-center"
 							onPress={() => navigate('MusicaRepertorioListar', { id: item.id })}
+							onLongPress={() => onPressRepertorio(item)}
 						>
 							<AntDesign name="folder1" size={20} color="black" />
 							<Text className="text-lg">{item.nome}</Text>
@@ -118,10 +124,40 @@ export const Repertorio: React.FC = () => {
 		}
 	}
 
+	async function onPressRepertorio(repertorio_: Repertorio) {
+		showActionSheetWithOptions({
+			options: [
+				'Renomear',
+				'Excluir',
+				'Cancelar',
+			],
+			destructiveButtonIndex: 1,
+			cancelButtonIndex: 2,
+			showSeparators: true,
+		}, (index) => {
+			switch (index) {
+				case 0:
+					setShowModalEditar(repertorio_);
+					break;
+				case 1:
+					handlerDeleteRepertorio(repertorio_.id);
+					break;
+				default:
+					break;
+			}
+		});
+	}
+
 	return (
 		<View>
+			<TextInput
+				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
+				placeholder="Buscar..."
+				value={search}
+				onChangeText={setSearch}
+			/>
 			<DraggableFlatList
-				data={repertorios}
+				data={repertorios.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
@@ -133,6 +169,11 @@ export const Repertorio: React.FC = () => {
 			<ModalCadastrar
 				show={showModalCadastrar}
 				setShow={setShowModalCadastrar}
+				callback={initialLoading}
+			/>
+			<ModalEditar
+				show={showModalEditar}
+				setShow={setShowModalEditar}
 				callback={initialLoading}
 			/>
 		</View>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, Alert, TouchableOpacity, FlatList } from 'react-native';
+import { Modal, View, Text, Alert, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -18,17 +18,20 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const [musicasSelecionadas, setMusicasSelecionadas] = useState<Musica[]>([]);
 	const insets = useSafeAreaInsets();
+	const [search,setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
-		const musicas_ = await MusicaDAO.listar() as any;
+		const musicas_ = await MusicaDAO.listarSemVinculo({ id_repertorio }) as any;
 		setMusicas(musicas_);
 		setLoading(false);
 	}
 
 	useEffect(() => {
-		initialLoading();
-	}, []);
+		if(show){
+			initialLoading();
+		}
+	}, [show]);
 
 	useEffect(() => {
 		if (show) {
@@ -65,10 +68,19 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
+			<TextInput
+				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
+				placeholder="Buscar..."
+				placeholderTextColor="#555"
+				value={search}
+				onChangeText={setSearch}
+				autoFocus
+			/>
 			<FlatList
-				data={musicas}
+				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
+				keyboardShouldPersistTaps="always"
 				ItemSeparatorComponent={() => (
 					<View className='h-[1px] w-full bg-gray-300'></View>
 				)}

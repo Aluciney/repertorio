@@ -3,7 +3,7 @@ import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flat
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
@@ -16,6 +16,7 @@ export const Listar: React.FC = () => {
 	const [musicas, setMusicas] = useState<MusicaRepertorioLista[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
+	const [search,setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -127,8 +128,14 @@ export const Listar: React.FC = () => {
 
 	return (
 		<View>
+			<TextInput
+				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
+				placeholder="Buscar..."
+				value={search}
+				onChangeText={setSearch}
+			/>
 			<DraggableFlatList
-				data={musicas}
+				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from 'react-native-flash-message';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -22,11 +23,13 @@ export const App: React.FC = () => {
 
 	return (
 		<GestureHandlerRootView>
-			<View className="flex-1">
-				<StatusBar translucent style="dark" />
-				<Routes />
-				<FlashMessage floating duration={5000} />
-			</View>
+			<ActionSheetProvider>
+				<View className="flex-1">
+					<StatusBar translucent style="dark" />
+					<Routes />
+					<FlashMessage floating duration={5000} />
+				</View>
+			</ActionSheetProvider>
 		</GestureHandlerRootView>
 	);
 };

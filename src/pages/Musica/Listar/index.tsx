@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -14,6 +14,7 @@ export const Listar: React.FC = () => {
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
+	const [search,setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -79,8 +80,14 @@ export const Listar: React.FC = () => {
 
 	return (
 		<View>
+			<TextInput
+				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
+				placeholder="Buscar..."
+				value={search}
+				onChangeText={setSearch}
+			/>
 			<FlatList
-				data={musicas}
+				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (

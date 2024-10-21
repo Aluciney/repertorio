@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Modal, View, Text, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
@@ -44,7 +44,10 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
-			<View className="flex-1 p-4">
+			<ScrollView
+				keyboardShouldPersistTaps="always"
+				className="flex-1 p-4"
+			>
 				<View className="flex-row space-x-3 flex-1">
 					<Controller
 						name="nome"
@@ -72,7 +75,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</ScrollView>
 		</Modal>
 	);
 };
