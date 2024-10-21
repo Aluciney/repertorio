@@ -9,11 +9,6 @@ import { Swipeable } from 'react-native-gesture-handler';
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 
-interface MusicaRepertorioLista extends MusicaRepertorio {
-	id_musica: number;
-	nome: string;
-}
-
 export const Listar: React.FC = () => {
 	const { params } = useRoute();
 	const { id } = params as { id: number; };

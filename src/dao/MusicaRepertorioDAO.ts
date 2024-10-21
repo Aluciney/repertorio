@@ -6,7 +6,8 @@ export const MusicaRepertorioDAO = {
 			select 
 				mr.*,
 				m.id as id_musica,
-				m.nome
+				m.nome,
+				m.cifra
 			from musica_repertorio mr 
 			inner join musica m on mr.id_musica = m.id
 			where mr.id_repertorio = ?

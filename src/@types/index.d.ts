@@ -31,3 +31,8 @@ interface MusicaRepertorio {
 	ordem: number;
 	data_criacao: string;
 }
+
+interface MusicaRepertorioLista extends MusicaRepertorio {
+	id_musica: number;
+	nome: string;
+}
