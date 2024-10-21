@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
@@ -47,9 +47,9 @@ export const Listar: React.FC = () => {
 					</TouchableOpacity>
 					<TouchableOpacity
 						className="px-2"
-						onPress={() => setShowModalCadastrar(true)}
+						onPress={() => navigate('Reproduzir', { id })}
 					>
-						<Feather name="edit" size={20} color="#888" />
+						<Ionicons name="play-outline" size={24} color="#888" />
 					</TouchableOpacity>
 				</View>
 			)

@@ -1,17 +1,18 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { MusicaEditar, MusicaListar, MusicaVisualizar } from './pages/Musica';
 import { MusicaRepertorioListar } from './pages/MusicaRepertorio';
 import { Repertorio } from './pages/Repertorio';
+import { Reproduzir } from './pages/Reproduzir';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const Routes: React.FC = () => {
-	
+
 	const StackRepertorio = () => (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -23,6 +24,11 @@ export const Routes: React.FC = () => {
 				name="MusicaRepertorioListar"
 				component={MusicaRepertorioListar}
 				options={{ title: 'Músicas', headerBackTitle: 'Repertórios' }}
+			/>
+			<Stack.Screen
+				name="Reproduzir"
+				component={Reproduzir}
+				options={{ headerShown: false }}
 			/>
 			<Stack.Screen
 				name="MusicaRepertorioVisualizar"
@@ -59,7 +65,13 @@ export const Routes: React.FC = () => {
 
 	return (
 		<NavigationContainer>
-			<Tab.Navigator>
+			<Tab.Navigator
+				screenOptions={({ route }) => ({
+					tabBarStyle: {
+						display: getFocusedRouteNameFromRoute(route) === 'Reproduzir' ? 'none' : 'flex',
+					},
+				})}
+			>
 				<Tab.Screen
 					name="StackRepertorio"
 					component={StackRepertorio}

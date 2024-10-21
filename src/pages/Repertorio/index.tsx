@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
@@ -23,9 +23,11 @@ export const Repertorio: React.FC = () => {
 		setLoading(false);
 	}
 
-	useEffect(() => {
-		initialLoading();
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			initialLoading();
+		}, [])
+	);
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
