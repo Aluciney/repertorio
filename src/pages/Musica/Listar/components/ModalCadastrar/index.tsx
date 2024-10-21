@@ -1,11 +1,10 @@
+import { useEffect, useState } from 'react';
+import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
+
 import { InputText } from '../../../../../components/InputText';
-import { useState } from 'react';
-import { RepertorioDAO } from '../../../../../dao/RepertorioDAO';
-import { MusicaRepertorioDAO } from '../../../../../dao/MusicaRepertorioDAO';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
 
 const schema = Yup.object().shape({
@@ -53,6 +52,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			setShow(false);
 		}
 	}
+
+	useEffect(() => {
+		if(show){
+			reset();
+		}
+	},[show]);
 
 	return (
 		<Modal

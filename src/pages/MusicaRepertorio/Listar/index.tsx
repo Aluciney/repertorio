@@ -57,7 +57,7 @@ export const Listar: React.FC = () => {
 				renderItem={({ item }) => (
 					<TouchableOpacity
 						className="p-4 flex-row gap-3 items-center"
-						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica })}
+						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
 					>
 						<Ionicons name="musical-notes-outline" size={20} color="black" />
 						<Text className="text-lg">{item.nome}</Text>

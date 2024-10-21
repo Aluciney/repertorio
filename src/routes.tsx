@@ -1,16 +1,17 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+
+import { MusicaEditar, MusicaListar, MusicaVisualizar } from './pages/Musica';
 import { MusicaRepertorioListar } from './pages/MusicaRepertorio';
 import { Repertorio } from './pages/Repertorio';
-import { MusicaListar, MusicaVisualizar } from './pages/Musica';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const Routes: React.FC = () => {
-
+	
 	const StackRepertorio = () => (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -28,6 +29,11 @@ export const Routes: React.FC = () => {
 				component={MusicaVisualizar}
 				options={{ title: 'Cifra', headerBackTitle: 'Voltar' }}
 			/>
+			<Stack.Screen
+				name="MusicaRepertorioEditar"
+				component={MusicaEditar}
+				options={{ title: 'Editar', headerBackTitle: 'Cifra' }}
+			/>
 		</Stack.Navigator>
 	);
 
@@ -43,6 +49,11 @@ export const Routes: React.FC = () => {
 				component={MusicaVisualizar}
 				options={{ title: 'Cifra', headerBackTitle: 'Músicas' }}
 			/>
+			<Stack.Screen
+				name="MusicaEditar"
+				component={MusicaEditar}
+				options={{ title: 'Editar', headerBackTitle: 'Cifra' }}
+			/>
 		</Stack.Navigator>
 	);
 
@@ -52,8 +63,8 @@ export const Routes: React.FC = () => {
 				<Tab.Screen
 					name="StackRepertorio"
 					component={StackRepertorio}
-					options={{ 
-						tabBarLabel: 'Repertórios', 
+					options={{
+						tabBarLabel: 'Repertórios',
 						headerShown: false,
 						tabBarIcon: ({ color, size, focused }) => (
 							<AntDesign name="folder1" size={size} color={color} />
@@ -63,13 +74,13 @@ export const Routes: React.FC = () => {
 				<Tab.Screen
 					name="StackMusica"
 					component={StackMusica}
-					options={{ 
+					options={{
 						tabBarLabel: 'Músicas',
 						headerShown: false,
 						tabBarIcon: ({ color, size, focused }) => (
 							<Ionicons name="musical-notes-outline" size={size} color={color} />
 						)
-					 }}
+					}}
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>

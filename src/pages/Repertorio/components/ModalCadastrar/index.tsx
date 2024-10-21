@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
+import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
-import { InputText } from '../../../../components/InputText';
-import { useState } from 'react';
+
 import { RepertorioDAO } from '../../../../dao/RepertorioDAO';
+import { InputText } from '../../../../components/InputText';
 
 const schema = Yup.object().shape({
 	nome: Yup.string().required('Campo obrigatório').min(4, 'No mínimo 4 caracteres'),
@@ -19,7 +20,6 @@ interface Props {
 }
 
 export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => {
-
 	const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 	const [loading, setLoading] = useState(false);
 
@@ -51,6 +51,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			setShow(false);
 		}
 	}
+
+	useEffect(() => {
+		if(show){
+			reset();
+		}
+	},[show]);
 
 	return (
 		<Modal

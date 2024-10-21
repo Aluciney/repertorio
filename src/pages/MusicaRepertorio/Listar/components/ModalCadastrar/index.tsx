@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, View, Text, Alert, TouchableOpacity, FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../../../../dao/MusicaRepertorioDAO';
@@ -16,6 +17,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	const [loading, setLoading] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const [musicasSelecionadas, setMusicasSelecionadas] = useState<Musica[]>([]);
+	const insets = useSafeAreaInsets();
 
 	async function initialLoading() {
 		setLoading(true);
@@ -28,11 +30,17 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 		initialLoading();
 	}, []);
 
+	useEffect(() => {
+		if(show){
+			setMusicasSelecionadas([]);
+		}
+	},[show]);
+
 	const onSubmit = async () => {
 		const { isConfirmed } = await new Promise<{ isConfirmed: boolean }>((resolve) => {
 			Alert.alert(
 				"Cadastrar musica",
-				"Tem certeza que deseja solicitar?",
+				"Tem certeza que deseja cadastrar?",
 				[
 					{
 						text: "Não", onPress: () => {
@@ -80,13 +88,15 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 			presentationStyle="formSheet"
 		>
 			<FlatList
-
 				data={musicas}
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
 					<View className='h-[1px] w-full bg-gray-300'></View>
 				)}
+				contentContainerStyle={{
+					paddingBottom: insets.bottom
+				}}
 				renderItem={({ item }) => (
 					<TouchableOpacity
 						className="p-4 flex-row gap-3 items-center"
@@ -102,9 +112,10 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 				)}
 			/>
 			<TouchableOpacity
-				className="absolute p-2 bottom-4 left-4 right-4 bg-blue-500 rounded-md items-center"
+				className="absolute p-2 bottom-0 left-4 right-4 bg-blue-500 rounded-md items-center"
 				onPress={onSubmit}
 				disabled={!(!!musicasSelecionadas.length)}
+				style={{ marginBottom: insets.bottom }}
 			>
 				<Text className="text-white text-lg">Cadastrar</Text>
 			</TouchableOpacity>

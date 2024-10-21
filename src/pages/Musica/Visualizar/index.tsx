@@ -1,72 +1,76 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Text, TouchableOpacity, ScrollView, StyleSheet, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+
 import { MusicaDAO } from '../../../dao/MusicaDAO';
+
+type Parte = string | JSX.Element;
 
 export const Visualizar: React.FC = () => {
 	const { params } = useRoute();
-	const { id } = params as { id: number; };
+	const { id, origem } = params as { id: number; origem: string; };
 	const [loading, setLoading] = useState(true);
 	const [musica, setMusica] = useState<Musica>();
-	const { goBack } = useNavigation();
-	const [cifra, setCifra] = useState('');
+	const { navigate, setOptions } = useNavigation<any>();
 
-	const numberOfLines = Math.max(1, Math.floor(cifra.split('\n').length));
+	useEffect(() => {
+		const options: NativeStackNavigationOptions = {
+			headerRight: () => (
+				<TouchableOpacity
+					style={{ paddingRight: 10 }}
+					onPress={() => {
+						if (origem === 'MusicaRepertorio') {
+							navigate('MusicaRepertorioEditar', { id });
+						} else {
+							navigate('MusicaEditar', { id });
+						}
+					}}
+				>
+					<MaterialCommunityIcons name="file-document-edit-outline" size={24} color="black" />
+				</TouchableOpacity>
+			)
+		};
+		setOptions(options);
+	}, []);
 
 	async function initialLoading() {
 		setLoading(true);
 		const musica_ = await MusicaDAO.visualizar({ id });
-		setCifra(musica_.cifra);
 		setMusica(musica_);
 		setLoading(false);
 	}
-
-	const createLines = (count: number) => {
-		const lines = [];
-		for (let i = 0; i <= count; i++) {
-			lines.push(
-				<View
-					key={i}
-					className="absolute h-[1px] right-0 left-0 bg-gray-200"
-					style={{ top: (i + 1) * 14.7, opacity: i === 0 ? 0 : 100 }}
-				/>
-			);
-		}
-		return lines;
-	};
 
 	useEffect(() => {
 		initialLoading();
 	}, []);
 
-	const handleSave = async () => {
-		if (!!musica) {
-			await MusicaDAO.atualizar({ id: musica.id, nome: musica.nome, cifra: cifra });
-			goBack();
-		}
-	}
+	const formatarLinhaComNotas = (linha: string): Parte[] => {
+		const partes = linha.split(/(\s+)/);
+		return partes.map((parte, index) => {
+			const isNota = /^[A-G](#|m|7|b)?$/.test(parte);
+			return (
+				<Text
+					key={index}
+					className={isNota ? 'font-bold' : ''}
+				>
+					{parte}
+				</Text>
+			);
+		});
+	};
+
+	const linhas: string[] = musica?.cifra.split('\n') || [];
 
 	return (
-		<View className="flex-1">
-			<View className="relative">
-				{createLines(numberOfLines)}
-					<TextInput
-						className="w-full p-4 text-[16px] text-black font-semibold"
-						multiline
-						value={cifra}
-						style={{ fontFamily: 'Courier New' }}
-						autoComplete="off"
-						autoCorrect={false}
-						onChangeText={setCifra}
-					/>
-			</View>
-			<TouchableOpacity
-				onPress={handleSave}
-				className="absolute top-3 right-3 bg-gray-400 px-6 py-3 rounded-md"
-			>
-				<Text className="text-white">Salvar</Text>
-			</TouchableOpacity>
-		</View>
+		<ScrollView className="flex-1 pt-4">
+			{linhas.map((linha, index) => (
+				<Text key={index} className="px-4 text-[16px] text-black" style={{ fontFamily: 'Courier New' }}>
+					{formatarLinhaComNotas(linha)}
+				</Text>
+			))}
+		</ScrollView>
 	);
 };
