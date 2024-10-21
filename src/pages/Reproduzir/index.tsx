@@ -59,7 +59,6 @@ export const Reproduzir: React.FC = () => {
 				scrollEventThrottle={16}
 				contentContainerStyle={{
 					paddingTop: insets.top,
-					paddingHorizontal: (4 * 4),
 					paddingBottom: insets.bottom
 				}}
 			>
@@ -81,6 +80,9 @@ export const Reproduzir: React.FC = () => {
 				>
 					<Text>Anterior</Text>
 				</TouchableOpacity>
+				<View className="items-center justify-center">
+					<Text>{ordem + 1} de {musicas.length}</Text>
+				</View>
 				<TouchableOpacity
 					className={`bg-gray-300 flex-1 items-center justify-center rounded-md ${!(!!musicas[ordem + 1]) ? 'opacity-60' : ''}`}
 					onPress={() => setOrdem(state => state + 1)}
