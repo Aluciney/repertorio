@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -30,20 +30,28 @@ export const Listar: React.FC = () => {
 	}
 
 	useFocusEffect(
-    useCallback(() => {
-      initialLoading();
-    }, [])
-  );
+		useCallback(() => {
+			initialLoading();
+		}, [])
+	);
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
-				<TouchableOpacity
-					style={{ paddingRight: 10 }}
-					onPress={() => setShowModalCadastrar(true)}
-				>
-					<MaterialCommunityIcons name="music-note-plus" size={24} color="black" />
-				</TouchableOpacity>
+				<View className="flex-row">
+					<TouchableOpacity
+						className="px-2"
+						onPress={() => setShowModalCadastrar(true)}
+					>
+						<MaterialCommunityIcons name="music-note-plus" size={24} color="#888" />
+					</TouchableOpacity>
+					<TouchableOpacity
+						className="px-2"
+						onPress={() => setShowModalCadastrar(true)}
+					>
+						<Feather name="edit" size={20} color="#888" />
+					</TouchableOpacity>
+				</View>
 			)
 		};
 		setOptions(options);
@@ -61,17 +69,24 @@ export const Listar: React.FC = () => {
 	const renderItem = useCallback(
 		({ item, drag, isActive }: RenderItemParams<MusicaRepertorioLista>) => {
 			return (
-				<Swipeable 
+				<Swipeable
 					renderLeftActions={() => renderLeftActions(item.id)}
 				>
-					<TouchableOpacity
-						className={`p-4 flex-row gap-3 items-center ${isActive ? 'bg-blue-100' : ''}`}
-						onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
-						onLongPress={drag}
-					>
-						<Ionicons name="musical-notes-outline" size={20} color="black" />
-						<Text className="text-lg">{item.nome}</Text>
-					</TouchableOpacity>
+					<View className={`flex-row ${isActive ? 'bg-blue-100' : ''}`}>
+						<TouchableOpacity
+							className="p-4 flex-row flex-1 gap-3 items-center"
+							onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
+						>
+							<Ionicons name="musical-notes-outline" size={20} color="black" />
+							<Text className="text-lg">{item.nome}</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="justify-center px-4"
+							onLongPress={drag}
+						>
+							<Ionicons name="reorder-four-outline" size={20} color="#00000040" />
+						</TouchableOpacity>
+					</View>
 				</Swipeable>
 			);
 		},

@@ -5,9 +5,9 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
 
+import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { MusicaDAO } from '../../../dao/MusicaDAO';
-import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 
 export const Listar: React.FC = () => {
 	const [loading, setLoading] = useState(true);
@@ -30,10 +30,10 @@ export const Listar: React.FC = () => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
 				<TouchableOpacity
-					style={{ paddingRight: 10 }}
+					className="px-2"
 					onPress={() => setShowModalCadastrar(true)}
 				>
-					<MaterialCommunityIcons name="music-note-plus" size={24} color="black" />
+					<MaterialCommunityIcons name="music-note-plus" size={24} color="#888" />
 				</TouchableOpacity>
 			)
 		};

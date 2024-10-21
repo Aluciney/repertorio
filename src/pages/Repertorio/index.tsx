@@ -6,9 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
+import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { RepertorioDAO } from '../../dao/RepertorioDAO';
-import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
 
 export const Repertorio: React.FC = () => {
 	const [loading, setLoading] = useState(true);
@@ -31,10 +31,10 @@ export const Repertorio: React.FC = () => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
 				<TouchableOpacity
-					style={{ paddingRight: 10 }}
+					className="px-2"
 					onPress={() => setShowModalCadastrar(true)}
 				>
-					<AntDesign name="addfolder" size={22} color="black" />
+					<AntDesign name="addfolder" size={22} color="#888" />
 				</TouchableOpacity>
 			)
 		};
@@ -85,14 +85,21 @@ export const Repertorio: React.FC = () => {
 				<Swipeable
 					renderLeftActions={() => renderLeftActions(item.id)}
 				>
-					<TouchableOpacity
-						className={`p-4 flex-row gap-3 items-center ${isActive ? 'bg-blue-100' : ''}`}
-						onPress={() => navigate('MusicaRepertorioListar', { id: item.id })}
-						onLongPress={drag}
-					>
-						<AntDesign name="folder1" size={20} color="black" />
-						<Text className="text-lg">{item.nome}</Text>
-					</TouchableOpacity>
+					<View className={`flex-row ${isActive ? 'bg-blue-100' : ''}`}>
+						<TouchableOpacity
+							className="p-4 flex-row flex-1 gap-3 items-center"
+							onPress={() => navigate('MusicaRepertorioListar', { id: item.id })}
+						>
+							<AntDesign name="folder1" size={20} color="black" />
+							<Text className="text-lg">{item.nome}</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="justify-center px-4"
+							onLongPress={drag}
+						>
+							<Ionicons name="reorder-four-outline" size={20} color="#00000040" />
+						</TouchableOpacity>
+					</View>
 				</Swipeable>
 			);
 		},

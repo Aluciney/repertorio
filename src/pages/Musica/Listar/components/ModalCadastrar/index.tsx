@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Modal, View, Text, TouchableOpacity } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 

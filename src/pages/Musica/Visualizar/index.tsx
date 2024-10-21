@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Text, TouchableOpacity, ScrollView, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Text, TouchableOpacity, ScrollView } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { MusicaDAO } from '../../../dao/MusicaDAO';
 
@@ -19,7 +19,7 @@ export const Visualizar: React.FC = () => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
 				<TouchableOpacity
-					style={{ paddingRight: 10 }}
+					className="px-2"
 					onPress={() => {
 						if (origem === 'MusicaRepertorio') {
 							navigate('MusicaRepertorioEditar', { id });
@@ -28,7 +28,7 @@ export const Visualizar: React.FC = () => {
 						}
 					}}
 				>
-					<MaterialCommunityIcons name="file-document-edit-outline" size={24} color="black" />
+					<MaterialCommunityIcons name="file-document-edit-outline" size={24} color="#888" />
 				</TouchableOpacity>
 			)
 		};
@@ -43,10 +43,10 @@ export const Visualizar: React.FC = () => {
 	}
 
 	useFocusEffect(
-    useCallback(() => {
-      initialLoading();
-    }, [])
-  );
+		useCallback(() => {
+			initialLoading();
+		}, [])
+	);
 
 	const formatarLinhaComNotas = (linha: string): Parte[] => {
 		const partes = linha.split(/(\s+)/);

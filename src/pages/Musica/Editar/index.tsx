@@ -18,10 +18,10 @@ export const Editar: React.FC = () => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
 				<TouchableOpacity
-					style={{ paddingRight: 10 }}
+					className="px-2"
 					onPress={handleSave}
 				>
-					<Ionicons name="save-outline" size={24} color="black" />
+					<Ionicons name="save-outline" size={24} color="#888" />
 				</TouchableOpacity>
 			)
 		};
