@@ -70,11 +70,11 @@ export const Reproduzir: React.FC = () => {
 
 			</ScrollView>
 			<View
-				className="absolute bottom-0 left-3 right-3 flex-row h-10 space-x-3"
+				className="absolute bottom-0 left-3 right-3 flex-row h-10 space-x-3 justify-between"
 				style={{ marginBottom: insets.bottom }}
 			>
 				<TouchableOpacity
-					className={`bg-gray-300 flex-1 items-center justify-center rounded-md ${!(!!musicas[ordem - 1]) ? 'opacity-60' : ''}`}
+					className={`bg-gray-300 w-[100px] items-center justify-center rounded-md ${!(!!musicas[ordem - 1]) ? 'opacity-60' : ''}`}
 					onPress={() => setOrdem(state => state - 1)}
 					disabled={!(!!musicas[ordem - 1])}
 				>
@@ -84,7 +84,7 @@ export const Reproduzir: React.FC = () => {
 					<Text>{ordem + 1} de {musicas.length}</Text>
 				</View>
 				<TouchableOpacity
-					className={`bg-gray-300 flex-1 items-center justify-center rounded-md ${!(!!musicas[ordem + 1]) ? 'opacity-60' : ''}`}
+					className={`bg-gray-300 w-[100px] items-center justify-center rounded-md ${!(!!musicas[ordem + 1]) ? 'opacity-60' : ''}`}
 					onPress={() => setOrdem(state => state + 1)}
 					disabled={!(!!musicas[ordem + 1])}
 				>
