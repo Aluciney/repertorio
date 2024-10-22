@@ -5,6 +5,7 @@ import { View, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { MusicaDAO } from '../../../dao/MusicaDAO';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const Editar: React.FC = () => {
 	const { params } = useRoute();
@@ -64,19 +65,24 @@ export const Editar: React.FC = () => {
 	}
 
 	return (
-		<View className="flex-1">
+		<KeyboardAwareScrollView
+			className="flex-1"
+			scrollEventThrottle={16}
+			keyboardShouldPersistTaps="always"
+		>
 			<View className="relative">
 				{createLines(numberOfLines)}
 				<TextInput
-					className="w-full p-4 text-[16px] text-black font-semibold"
+					className="p-4 text-[16px] text-black font-semibold"
 					multiline
 					style={{ fontFamily: 'Courier New' }}
 					autoComplete="off"
 					autoCorrect={false}
 					value={cifra}
 					onChangeText={setCifra}
+					scrollEnabled={false}
 				/>
 			</View>
-		</View>
+		</KeyboardAwareScrollView>
 	);
 };

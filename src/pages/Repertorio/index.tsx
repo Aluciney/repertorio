@@ -11,6 +11,7 @@ import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { RepertorioDAO } from '../../dao/RepertorioDAO';
 import { ModalEditar } from './components/ModalEditar';
+import { InputSearch } from '../../components/InputSearch';
 
 export const Repertorio: React.FC = () => {
 	const [loading, setLoading] = useState(true);
@@ -150,9 +151,7 @@ export const Repertorio: React.FC = () => {
 
 	return (
 		<View>
-			<TextInput
-				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
-				placeholder="Buscar..."
+			<InputSearch
 				value={search}
 				onChangeText={setSearch}
 			/>

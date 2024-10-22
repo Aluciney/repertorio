@@ -27,7 +27,7 @@ export const App: React.FC = () => {
 				<View className="flex-1">
 					<StatusBar translucent style="dark" />
 					<Routes />
-					<FlashMessage floating duration={5000} />
+					<FlashMessage floating duration={5000} position="bottom" />
 				</View>
 			</ActionSheetProvider>
 		</GestureHandlerRootView>

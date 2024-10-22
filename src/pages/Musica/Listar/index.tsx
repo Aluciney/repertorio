@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Alert, FlatList, ListRenderItem, Text, TouchableOpacity, View } from 'react-native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
+import { InputSearch } from '../../../components/InputSearch';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { MusicaDAO } from '../../../dao/MusicaDAO';
 
@@ -14,7 +15,7 @@ export const Listar: React.FC = () => {
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
-	const [search,setSearch] = useState('');
+	const [search, setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -78,34 +79,32 @@ export const Listar: React.FC = () => {
 		</TouchableOpacity>
 	);
 
+	const renderItem: ListRenderItem<Musica> = ({ item }) => (
+		<Swipeable
+			renderLeftActions={() => renderLeftActions(item.id)}
+		>
+			<TouchableOpacity
+				className="p-4 flex-row gap-3 items-center"
+				onPress={() => navigate('MusicaVisualizar', { id: item.id, origem: 'Musica' })}
+			>
+				<Ionicons name="musical-notes-outline" size={20} color="black" />
+				<Text className="text-lg">{item.nome}</Text>
+			</TouchableOpacity>
+		</Swipeable>
+	);
+
 	return (
 		<View>
-			<TextInput
-				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
-				placeholder="Buscar..."
+			<InputSearch
 				value={search}
 				onChangeText={setSearch}
 			/>
-			<FlatList
+			<FlatList<Musica>
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
-				keyExtractor={item => item.id.toString()}
-				ItemSeparatorComponent={() => (
-					<View className='h-[1px] w-full bg-gray-300'></View>
-				)}
-				renderItem={({ item }) => (
-					<Swipeable
-						renderLeftActions={() => renderLeftActions(item.id)}
-					>
-						<TouchableOpacity
-							className="p-4 flex-row gap-3 items-center"
-							onPress={() => navigate('MusicaVisualizar', { id: item.id, origem: 'Musica' })}
-						>
-							<Ionicons name="musical-notes-outline" size={20} color="black" />
-							<Text className="text-lg">{item.nome}</Text>
-						</TouchableOpacity>
-					</Swipeable>
-				)}
+				keyExtractor={(item) => item.id.toString()}
+				ItemSeparatorComponent={() => <View className='h-[1px] w-full bg-gray-200'></View>}
+				renderItem={renderItem}
 			/>
 			<ModalCadastrar
 				show={showModalCadastrar}

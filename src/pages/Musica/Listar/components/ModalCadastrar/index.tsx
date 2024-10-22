@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Modal, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
+import axios from 'axios';
 import * as Yup from 'yup';
 
 import { InputText } from '../../../../../components/InputText';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
+import { ShowAlert } from '../../../../../utils/ShowAlert';
+import FlashMessage from 'react-native-flash-message';
 
 const schema = Yup.object().shape({
 	nome: Yup.string().required('Campo obrigatório').min(4, 'No mínimo 4 caracteres'),
@@ -20,14 +23,45 @@ interface Props {
 }
 
 export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => {
-
+	const flashMessageRef = useRef<FlashMessage>(null);
 	const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 	const [loading, setLoading] = useState(false);
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		await MusicaDAO.cadastrar({ nome: data.nome, cifra: '' });
-		callback();
+		let { nome, cifra = '' } = data as any;
+		setLoading(true);
+		if (data.nome.includes('https://')) {
+			const resultado = await fetchCifraFromLink(data.nome);
+			if (!(!!resultado)) {
+				flashMessageRef.current?.showMessage({
+					message: 'Erro ao localizar cifra',
+					description: 'Cifra não encontrada. Tente outro link ou cadastre manualmente',
+					type: 'danger',
+					icon: 'danger'
+				});
+				setLoading(false);
+				return;
+			}
+			nome = resultado.nome;
+			cifra = resultado.letra;
+		} else {
+			nome = data.nome;
+		}
+		const musica = await MusicaDAO.porNome({ nome: nome });
+		if (!!musica) {
+			flashMessageRef.current?.showMessage({
+				message: 'Música já cadastrada',
+				description: 'Já existe uma música cadastrada com esse nome',
+				type: 'danger',
+				icon: 'danger'
+			});
+			setLoading(false);
+			return;
+		}
+		await MusicaDAO.cadastrar({ nome, cifra });
 		reset();
+		setLoading(false);
+		callback();
 		setShow(false);
 	}
 
@@ -37,6 +71,21 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 		}
 	}, [show]);
 
+	async function fetchCifraFromLink(link: string): Promise<{ nome: string; letra: string } | null> {
+		try {
+			const { data } = await axios.get(link);
+			let nome = data.match(/<h1.*?>(.*?)<\/h1>/)?.[1] || '';
+			let letra = data.match(/<pre.*?>([\s\S]*?)<\/pre>/)?.[1] || '';
+			letra = letra.replaceAll('<b>', '').replaceAll('</b>', '');
+			if (!(!!nome) || !(!!letra)) {
+				return null;
+			}
+			return { nome, letra };
+		} catch (error) {
+			return null;
+		}
+	}
+
 	return (
 		<Modal
 			visible={show}
@@ -45,7 +94,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			presentationStyle="formSheet"
 		>
 			<ScrollView
-				keyboardShouldPersistTaps="always"
+				keyboardShouldPersistTaps="handled"
 				className="flex-1 p-4"
 			>
 				<View className="flex-row space-x-3 flex-1">
@@ -54,9 +103,9 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						control={control}
 						render={({ field, fieldState: { error } }) => (
 							<InputText
-								label="Nome"
+								label="Nome ou link"
 								classNameContainer="flex-1"
-								placeholder="Escreva o nome da música"
+								placeholder="Nome ou link da música"
 								autoFocus
 								onChangeText={field.onChange}
 								value={field.value}
@@ -67,8 +116,9 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						)}
 					/>
 					<TouchableOpacity
-						className="px-4 bg-green-400 mt-[17px] items-center justify-center rounded-md h-[35px]"
+						className={`px-4 bg-green-400 mt-[17px] items-center justify-center rounded-md h-[35px] ${loading ? 'opacity-40' : ''}`}
 						onPress={handleSubmit(onSubmit)}
+						disabled={loading}
 					>
 						<Text className="text-white">
 							Cadastrar
@@ -76,6 +126,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
+			<FlashMessage ref={flashMessageRef} floating duration={5000} position="bottom" />
 		</Modal>
 	);
 };

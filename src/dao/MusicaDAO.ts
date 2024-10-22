@@ -11,6 +11,9 @@ export const MusicaDAO = {
 			order by nome
 		`,[props.id_repertorio]);
 	},
+	porNome: async (props: { nome: string; }): Promise<any> => {
+		return Database.getFirstAsync(`select * from musica where nome = ?`, [props.nome]);
+	},
 	visualizar: async (props: { id: number; }): Promise<any> => {
 		return Database.getFirstAsync(`select * from musica where id = ?`, [props.id]);
 	},

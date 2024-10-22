@@ -82,6 +82,12 @@ export const Routes: React.FC = () => {
 							<AntDesign name="folder1" size={size} color={color} />
 						)
 					}}
+					listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              e.preventDefault();
+              navigation.navigate('StackRepertorio', { screen: 'Repertorio' });
+            },
+          })}
 				/>
 				<Tab.Screen
 					name="StackMusica"
@@ -93,6 +99,12 @@ export const Routes: React.FC = () => {
 							<Ionicons name="musical-notes-outline" size={size} color={color} />
 						)
 					}}
+					listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              e.preventDefault();
+              navigation.navigate('StackMusica', { screen: 'MusicaListar' });
+            },
+          })}
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>

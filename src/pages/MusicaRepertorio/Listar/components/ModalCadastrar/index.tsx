@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, Alert, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import { Modal, View, Text, Alert, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -18,7 +18,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const [musicasSelecionadas, setMusicasSelecionadas] = useState<Musica[]>([]);
 	const insets = useSafeAreaInsets();
-	const [search,setSearch] = useState('');
+	const [search, setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -28,7 +28,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	}
 
 	useEffect(() => {
-		if(show){
+		if (show) {
 			initialLoading();
 		}
 	}, [show]);
@@ -68,14 +68,25 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
-			<TextInput
-				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
-				placeholder="Buscar..."
-				placeholderTextColor="#555"
-				value={search}
-				onChangeText={setSearch}
-				autoFocus
-			/>
+			<View className="flex-row space-x-3 p-4">
+				<View className="flex-1">
+					<TextInput
+						className="border-[1px] rounded-md border-gray-300 text-sm p-2"
+						placeholder="Buscar..."
+						placeholderTextColor="#555"
+						value={search}
+						onChangeText={setSearch}
+						autoFocus
+					/>
+				</View>
+				<TouchableOpacity
+					className={`px-4 bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-70' : ''}`}
+					onPress={onSubmit}
+					disabled={!(!!musicasSelecionadas.length)}
+				>
+					<Text className="text-white text-lg">Cadastrar</Text>
+				</TouchableOpacity>
+			</View>
 			<FlatList
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
 				className="h-full"
@@ -101,14 +112,6 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 					</TouchableOpacity>
 				)}
 			/>
-			<TouchableOpacity
-				className="absolute p-2 bottom-0 left-4 right-4 bg-blue-500 rounded-md items-center"
-				onPress={onSubmit}
-				disabled={!(!!musicasSelecionadas.length)}
-				style={{ marginBottom: insets.bottom }}
-			>
-				<Text className="text-white text-lg">Cadastrar</Text>
-			</TouchableOpacity>
 		</Modal>
 	);
 };

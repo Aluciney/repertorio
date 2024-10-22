@@ -8,6 +8,7 @@ import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
+import { InputSearch } from '../../../components/InputSearch';
 
 export const Listar: React.FC = () => {
 	const { params } = useRoute();
@@ -128,9 +129,7 @@ export const Listar: React.FC = () => {
 
 	return (
 		<View>
-			<TextInput
-				className="border-[1px] m-4 rounded-md border-gray-300 text-sm p-2"
-				placeholder="Buscar..."
+			<InputSearch
 				value={search}
 				onChangeText={setSearch}
 			/>
