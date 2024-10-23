@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Modal, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as Yup from 'yup';
 
 import { InputText } from '../../../../../components/InputText';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
-import { ShowAlert } from '../../../../../utils/ShowAlert';
 import FlashMessage from 'react-native-flash-message';
 
 const schema = Yup.object().shape({
@@ -116,13 +116,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						)}
 					/>
 					<TouchableOpacity
-						className={`px-4 bg-green-400 mt-[17px] items-center justify-center rounded-md h-[35px] ${loading ? 'opacity-40' : ''}`}
+						className={`px-4 flex-row bg-green-500 mt-[17px] items-center justify-center rounded-md h-[35px] ${loading ? 'opacity-60' : ''}`}
 						onPress={handleSubmit(onSubmit)}
 						disabled={loading}
 					>
-						<Text className="text-white">
-							Cadastrar
-						</Text>
+						<MaterialIcons name="add" size={18} color="#FFF" />
+						<Text className="text-white ml-1">Cadastrar</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>

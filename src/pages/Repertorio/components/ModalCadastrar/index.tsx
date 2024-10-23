@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Modal, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { MaterialIcons } from '@expo/vector-icons';
 import * as Yup from 'yup';
 
 import { RepertorioDAO } from '../../../../dao/RepertorioDAO';
@@ -63,12 +64,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 						)}
 					/>
 					<TouchableOpacity
-						className="px-4 bg-green-400 mt-[17px] items-center justify-center rounded-md h-[35px]"
+						className={`px-4 flex-row bg-green-500 mt-[17px] items-center justify-center rounded-md h-[35px] ${loading ? 'opacity-60' : ''}`}
 						onPress={handleSubmit(onSubmit)}
+						disabled={loading}
 					>
-						<Text className="text-white">
-							Cadastrar
-						</Text>
+						<MaterialIcons name="add" size={18} color="#FFF" />
+						<Text className="text-white ml-1">Cadastrar</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, Alert, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../../../../dao/MusicaRepertorioDAO';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
@@ -80,11 +80,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 					/>
 				</View>
 				<TouchableOpacity
-					className={`px-4 bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-70' : ''}`}
+					className={`px-4 flex-row bg-green-500 mt-[17px] items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
 					onPress={onSubmit}
 					disabled={!(!!musicasSelecionadas.length)}
 				>
-					<Text className="text-white text-lg">Cadastrar</Text>
+					<MaterialIcons name="add" size={18} color="#FFF" />
+					<Text className="text-white ml-1">Cadastrar</Text>
 				</TouchableOpacity>
 			</View>
 			<FlatList

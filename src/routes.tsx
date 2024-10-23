@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-import { MusicaEditar, MusicaListar, MusicaVisualizar } from './pages/Musica';
+import { MusicaEditar, MusicaListar, MusicaVisualizar, MusicaReproduzir } from './pages/Musica';
 import { MusicaRepertorioListar } from './pages/MusicaRepertorio';
 import { Repertorio } from './pages/Repertorio';
 import { Reproduzir } from './pages/Reproduzir';
@@ -56,6 +56,11 @@ export const Routes: React.FC = () => {
 				options={{ title: 'Cifra', headerBackTitle: 'Músicas' }}
 			/>
 			<Stack.Screen
+				name="MusicaReproduzir"
+				component={MusicaReproduzir}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
 				name="MusicaEditar"
 				component={MusicaEditar}
 				options={{ title: 'Editar', headerBackTitle: 'Cifra' }}
@@ -68,7 +73,7 @@ export const Routes: React.FC = () => {
 			<Tab.Navigator
 				screenOptions={({ route }) => ({
 					tabBarStyle: {
-						display: getFocusedRouteNameFromRoute(route) === 'Reproduzir' ? 'none' : 'flex',
+						display: ['MusicaReproduzir','Reproduzir'].includes(getFocusedRouteNameFromRoute(route) || '--')  ? 'none' : 'flex',
 					},
 				})}
 			>

@@ -21,7 +21,7 @@ export const Transpor = {
 	nota: (linha: string, semitons: number) => {
 		const regexNota = /^[A-G](b|#)?(m|maj|min|dim|aug|sus|add|º)?\d*(M|b|#)?(\/[A-G](b|#)?)?$/;
 		let novaParte = linha;
-		if (semitons > 0) {
+		if (semitons !== 0) {
 			const transporParte = (parte: string): string => {
 				if (regexNota.test(parte)) {
 					//@ts-ignore
@@ -31,7 +31,7 @@ export const Transpor = {
 				}
 				return parte;
 			};
-			novaParte = linha.split(/[\s/]+/).map(transporParte).join(' ');
+			novaParte = linha.split(/[\s/]+/).map(transporParte).join('/');
 		}
 		return novaParte;
 	}
