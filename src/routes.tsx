@@ -1,6 +1,6 @@
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { MusicaEditar, MusicaListar, MusicaVisualizar, MusicaReproduzir } from './pages/Musica';
@@ -73,7 +73,7 @@ export const Routes: React.FC = () => {
 			<Tab.Navigator
 				screenOptions={({ route }) => ({
 					tabBarStyle: {
-						display: ['MusicaReproduzir','Reproduzir'].includes(getFocusedRouteNameFromRoute(route) || '--')  ? 'none' : 'flex',
+						display: ['MusicaReproduzir', 'Reproduzir'].includes(getFocusedRouteNameFromRoute(route) || '--') ? 'none' : 'flex',
 					},
 				})}
 			>
@@ -88,11 +88,11 @@ export const Routes: React.FC = () => {
 						)
 					}}
 					listeners={({ navigation }) => ({
-            tabPress: (e) => {
-              e.preventDefault();
-              navigation.navigate('StackRepertorio', { screen: 'Repertorio' });
-            },
-          })}
+						tabPress: (e) => {
+							e.preventDefault();
+							navigation.navigate('StackRepertorio', { screen: 'Repertorio' });
+						},
+					})}
 				/>
 				<Tab.Screen
 					name="StackMusica"
@@ -105,11 +105,11 @@ export const Routes: React.FC = () => {
 						)
 					}}
 					listeners={({ navigation }) => ({
-            tabPress: (e) => {
-              e.preventDefault();
-              navigation.navigate('StackMusica', { screen: 'MusicaListar' });
-            },
-          })}
+						tabPress: (e) => {
+							e.preventDefault();
+							navigation.navigate('StackMusica', { screen: 'MusicaListar' });
+						},
+					})}
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>

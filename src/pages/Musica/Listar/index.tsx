@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, FlatList, ListRenderItem, Text, TouchableOpacity, View } from 'react-native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
@@ -16,6 +17,7 @@ export const Listar: React.FC = () => {
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [search, setSearch] = useState('');
+	const insets = useSafeAreaInsets();
 
 	async function initialLoading() {
 		setLoading(true);
@@ -24,10 +26,11 @@ export const Listar: React.FC = () => {
 		setLoading(false);
 	}
 
-	useEffect(() => {
-		initialLoading();
-	}, []);
-
+	useFocusEffect(
+		useCallback(() => {
+			initialLoading();
+		}, [])
+	);
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
 			headerRight: () => (
@@ -94,7 +97,7 @@ export const Listar: React.FC = () => {
 	);
 
 	return (
-		<View>
+		<View style={{ marginBottom: 80 }}>
 			<InputSearch
 				value={search}
 				onChangeText={setSearch}

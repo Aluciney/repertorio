@@ -62,6 +62,7 @@ export const Reproduzir: React.FC = () => {
 					paddingBottom: insets.bottom + 80
 				}}
 			>
+				<Text className="px-4 font-bold text-white text-lg mb-4">{musica?.nome}</Text>
 				{linhas.map((linha, index) => (
 					<Text key={index} className="px-4 text-[16px] text-white" style={{ fontFamily: 'Courier New' }}>
 						{formatarLinhaComNotas(linha)}

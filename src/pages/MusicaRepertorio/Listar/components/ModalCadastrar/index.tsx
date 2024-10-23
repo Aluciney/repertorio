@@ -40,11 +40,15 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 	}, [show]);
 
 	const onSubmit = async () => {
+		const musicas = await MusicaRepertorioDAO.listar({ id_repertorio });
+		const ultima_musica = musicas.slice(-1)[0];
+		let ordem_atual = ultima_musica?.ordem || 0;
 		for (var num = 0; num < musicasSelecionadas.length; num++) {
+			ordem_atual += 1;
 			await MusicaRepertorioDAO.cadastrar({
 				id_repertorio,
 				id_musica: musicasSelecionadas[num].id,
-				ordem: 1
+				ordem: ordem_atual
 			});
 		}
 		callback();

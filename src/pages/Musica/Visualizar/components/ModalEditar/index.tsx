@@ -84,7 +84,7 @@ export const ModalEditar: React.FC<Props> = ({ musica, tom, setTom, show, setSho
                 useNativeDriver
                 onClose={onCloseModalize}
                 adjustToContentHeight
-                keyboardAvoidingBehavior={Platform.OS ? 'padding' : 'height'}
+                // keyboardShouldPersistTaps="always"
             >
                 <View className="px-4 pt-4 pb-12">
                     <View className="items-center">
