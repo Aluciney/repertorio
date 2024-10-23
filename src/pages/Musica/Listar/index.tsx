@@ -3,6 +3,7 @@ import { Alert, FlatList, ListRenderItem, Text, TouchableOpacity, View } from 'r
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Swipeable } from 'react-native-gesture-handler';
 
@@ -12,6 +13,7 @@ import { ModalCadastrar } from './components/ModalCadastrar';
 import { MusicaDAO } from '../../../dao/MusicaDAO';
 
 export const Listar: React.FC = () => {
+	const tabBarHeight = useBottomTabBarHeight();
 	const [loading, setLoading] = useState(true);
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
@@ -97,17 +99,19 @@ export const Listar: React.FC = () => {
 	);
 
 	return (
-		<View style={{ marginBottom: 80 }}>
+		<View style={{ paddingBottom: tabBarHeight - 12 }}>
 			<InputSearch
 				value={search}
 				onChangeText={setSearch}
 			/>
 			<FlatList<Musica>
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
-				className="h-full"
 				keyExtractor={(item) => item.id.toString()}
 				ItemSeparatorComponent={() => <View className='h-[1px] w-full bg-gray-200'></View>}
 				renderItem={renderItem}
+				contentContainerStyle={{
+					paddingBottom: 10
+				}}
 			/>
 			<ModalCadastrar
 				show={showModalCadastrar}

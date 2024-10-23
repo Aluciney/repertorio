@@ -72,6 +72,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
+			
 			<View className="flex-row space-x-3 p-4">
 				<View className="flex-1">
 					<TextInput
@@ -84,7 +85,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 					/>
 				</View>
 				<TouchableOpacity
-					className={`px-4 flex-row bg-green-500 mt-[17px] items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
+					className={`px-4 flex-row bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
 					onPress={onSubmit}
 					disabled={!(!!musicasSelecionadas.length)}
 				>
@@ -97,6 +98,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				keyboardShouldPersistTaps="always"
+				automaticallyAdjustKeyboardInsets
 				ItemSeparatorComponent={() => (
 					<View className='h-[1px] w-full bg-gray-300'></View>
 				)}

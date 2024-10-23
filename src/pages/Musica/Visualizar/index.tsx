@@ -38,18 +38,22 @@ export const Visualizar: React.FC = () => {
 					>
 						<MaterialCommunityIcons name="file-document-edit-outline" size={24} color="#888" />
 					</TouchableOpacity>
-					<TouchableOpacity
-						className="px-2"
-						onPress={() => setShowModalEditar(true)}
-					>
-						<MaterialCommunityIcons name="cog-outline" size={24} color="#888" />
-					</TouchableOpacity>
-					<TouchableOpacity
-						className="px-2"
-						onPress={() => navigate('MusicaReproduzir', { id })}
-					>
-						<Ionicons name="play-outline" size={24} color="#888" />
-					</TouchableOpacity>
+					{origem !== 'MusicaRepertorio' && (
+						<>
+							<TouchableOpacity
+								className="px-2"
+								onPress={() => setShowModalEditar(true)}
+							>
+								<MaterialCommunityIcons name="cog-outline" size={24} color="#888" />
+							</TouchableOpacity>
+							<TouchableOpacity
+								className="px-2"
+								onPress={() => navigate('MusicaReproduzir', { id })}
+							>
+								<Ionicons name="play-outline" size={24} color="#888" />
+							</TouchableOpacity>
+						</>
+					)}
 				</View>
 			)
 		};
@@ -96,14 +100,14 @@ export const Visualizar: React.FC = () => {
 					paddingBottom: insets.bottom + 20
 				}}
 			>
+				<Text className="px-4 font-bold text-black text-lg mb-4">{musica?.nome}</Text>
 				{linhas.map((linha, index) => (
 					<Text key={index} className="px-4 text-[16px] text-black" style={{ fontFamily: 'Courier New' }}>
 						{formatarLinhaComNotas(linha)}
 					</Text>
 				))}
-
 			</ScrollView>
-			<ModalEditar 
+			<ModalEditar
 				musica={musica}
 				tom={tom}
 				setTom={setTom}

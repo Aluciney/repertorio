@@ -3,24 +3,26 @@ import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flat
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
+import { InputSearch } from '../../components/InputSearch';
 import { RepertorioDAO } from '../../dao/RepertorioDAO';
 import { ModalEditar } from './components/ModalEditar';
-import { InputSearch } from '../../components/InputSearch';
 
 export const Repertorio: React.FC = () => {
+	const tabBarHeight = useBottomTabBarHeight();
 	const [loading, setLoading] = useState(true);
 	const [repertorios, setRepertorios] = useState<Repertorio[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [showModalEditar, setShowModalEditar] = useState<Repertorio>();
 	const { showActionSheetWithOptions } = useActionSheet();
-	const [search,setSearch] = useState('');
+	const [search, setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -150,7 +152,7 @@ export const Repertorio: React.FC = () => {
 	}
 
 	return (
-		<View>
+		<View style={{ paddingBottom: tabBarHeight - 12 }}>
 			<InputSearch
 				value={search}
 				onChangeText={setSearch}
@@ -164,6 +166,9 @@ export const Repertorio: React.FC = () => {
 				)}
 				renderItem={renderItem}
 				onDragEnd={({ data }) => handleUpdateOrdem(data)}
+				contentContainerStyle={{
+					paddingBottom: 10
+				}}
 			/>
 			<ModalCadastrar
 				show={showModalCadastrar}
