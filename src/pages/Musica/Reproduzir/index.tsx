@@ -1,11 +1,11 @@
-import { ScrollView, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView, Text, View } from 'react-native';
 import { setStatusBarHidden } from 'expo-status-bar';
 import { useRoute } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
+
 import { MusicaDAO } from '../../../dao/MusicaDAO';
-import { Transpor } from '../../../utils/Transpor';
 
 type Parte = string | JSX.Element;
 
@@ -18,10 +18,10 @@ export const Reproduzir: React.FC = () => {
 
 	useEffect(() => {
 		setStatusBarHidden(true);
-		// activateKeepAwakeAsync();
+		activateKeepAwakeAsync();
 		return () => {
 			setStatusBarHidden(false);
-			// deactivateKeepAwake();
+			deactivateKeepAwake();
 		};
 	}, []);
 

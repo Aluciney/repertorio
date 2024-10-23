@@ -18,10 +18,10 @@ export const Reproduzir: React.FC = () => {
 
 	useEffect(() => {
 		setStatusBarHidden(true);
-		// activateKeepAwakeAsync();
+		activateKeepAwakeAsync();
 		return () => {
 			setStatusBarHidden(false);
-			// deactivateKeepAwake();
+			deactivateKeepAwake();
 		};
 	}, []);
 

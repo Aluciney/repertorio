@@ -22,6 +22,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "10a23255-c293-48af-acd2-7fa4cbddc533"
+      }
+    },
+    "owner": "aluciney_wanderley",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/10a23255-c293-48af-acd2-7fa4cbddc533"
     }
   }
 }
