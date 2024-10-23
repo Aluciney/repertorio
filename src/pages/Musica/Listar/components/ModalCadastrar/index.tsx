@@ -94,7 +94,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			presentationStyle="formSheet"
 		>
 			<ScrollView
-				keyboardShouldPersistTaps="handled"
+				keyboardShouldPersistTaps="always"
 				className="flex-1 p-4"
 			>
 				<View className="flex-row space-x-3 flex-1">

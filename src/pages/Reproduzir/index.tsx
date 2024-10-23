@@ -8,6 +8,7 @@ import { setStatusBarHidden } from 'expo-status-bar';
 import { useRoute } from '@react-navigation/native';
 
 import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
+import { Transpor } from '../../utils/Transpor';
 
 type Parte = string | JSX.Element;
 
@@ -18,6 +19,7 @@ export const Reproduzir: React.FC = () => {
 	const [loading, setLoading] = useState(true);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const [ordem, setOrdem] = useState(0);
+	const [tom, setTom] = useState(0);
 	const [tamanhoFonte, setTamanhoFonte] = useState(16);
 	const [visualizarConfiguracao, setVisualizarConfiguracao] = useState(false);
 
@@ -64,12 +66,13 @@ export const Reproduzir: React.FC = () => {
 		const partes = linha.split(/(\s+)/);
 		return partes.map((parte, index) => {
 			const isNota = /^[A-G](b|#)?(m|maj|min|dim|aug|sus|add|º)?\d*(M|b|#)?(\/[A-G](b|#)?)?$/.test(parte);
+			const texto = isNota ? Transpor.nota(parte, tom) : parte;
 			return (
 				<Text
 					key={index}
 					className={isNota ? 'font-bold' : ''}
 				>
-					{parte}
+					{texto}
 				</Text>
 			);
 		});
@@ -84,6 +87,10 @@ export const Reproduzir: React.FC = () => {
 			toggleView();
 		})
 		.runOnJS(true);
+
+	useEffect(() => {
+		setTom(0);
+	},[ordem]);
 
 	return (
 		<View className="flex-1 relative bg-black">
@@ -143,6 +150,23 @@ export const Reproduzir: React.FC = () => {
 						disabled={tamanhoFonte === 25}
 					>
 						<Text className="text-gray-300">Fonte +</Text>
+					</TouchableOpacity>
+				</View>
+				<View className="flex-row h-10 space-x-3 justify-between">
+					<TouchableOpacity
+						className={`bg-gray-500 w-[60px] items-center justify-center rounded-md`}
+						onPress={() => setTom(state => state - 1)}
+					>
+						<Text className="text-gray-300">Tom -</Text>
+					</TouchableOpacity>
+					<View className="items-center justify-center">
+						<Text className="text-gray-300">{tom > 0 ? '+' : ''}{tom}</Text>
+					</View>
+					<TouchableOpacity
+						className={`bg-gray-500 w-[60px] items-center justify-center rounded-md `}
+						onPress={() => setTom(state => state + 1)}
+					>
+						<Text className="text-gray-300">Tom +</Text>
 					</TouchableOpacity>
 				</View>
 			</Animated.View>
