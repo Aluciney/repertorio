@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Modal, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import FlashMessage from 'react-native-flash-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MaterialIcons } from '@expo/vector-icons';
-import axios from 'axios';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import { InputText } from '../../../../../components/InputText';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
-import FlashMessage from 'react-native-flash-message';
+import { useTheme } from '../../../../../contexts/theme';
 
 const schema = Yup.object().shape({
 	nome: Yup.string().required('Campo obrigatório').min(4, 'No mínimo 4 caracteres'),
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => {
+	const { theme } = useTheme();
 	const flashMessageRef = useRef<FlashMessage>(null);
 	const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 	const [loading, setLoading] = useState(false);
@@ -92,10 +94,12 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback }) => 
 			onRequestClose={() => setShow(false)}
 			animationType="slide"
 			presentationStyle="formSheet"
+			
 		>
 			<ScrollView
 				keyboardShouldPersistTaps="always"
 				className="flex-1 p-4"
+				style={{ backgroundColor: theme.background }}
 			>
 				<View className="flex-row space-x-3 flex-1">
 					<Controller

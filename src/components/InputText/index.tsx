@@ -15,17 +15,17 @@ export const InputText: React.FC<Props> = ({ label, passwordView, error, icon, r
 	const [showPassword, setShowPassword] = useState(false);
 	return (
 		<View className={`gap-1 ${classNameContainer || ''}`}>
-			{label && <Text className="text-[13px]">{label} {required && <Text className="text-red-500">*</Text>}</Text>}
-			<View className={`relative border-[1px] rounded-md ${error ? 'border-red-200' : 'border-gray-200'}`}>
+			{label && <Text className="text-[13px] text-white">{label} {required && <Text className="text-red-500">*</Text>}</Text>}
+			<View className={`relative border-[1px] rounded-md ${error ? 'border-red-200' : 'border-zinc-500'}`}>
 				{icon && (
 					<View className="absolute inset-y-0 left-0 items-center pl-2 mt-2">
 						{icon}
 					</View>
 				)}
 				<TextInput
-					className={`w-full text-gray-900 text-[17px] p-2 ${icon ? 'pl-8' : 'pl-2'}`}
+					className={`w-full text-white text-[17px] p-2 ${icon ? 'pl-8' : 'pl-2'}`}
 					secureTextEntry={passwordView ? !showPassword : false}
-					placeholderTextColor={placeholderTextColor || '#00000030'}
+					placeholderTextColor={placeholderTextColor || '#71717a'}
 					{...rest}
 				/>
 				{passwordView && (

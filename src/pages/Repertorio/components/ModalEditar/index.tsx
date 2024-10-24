@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 
 import { RepertorioDAO } from '../../../../dao/RepertorioDAO';
 import { InputText } from '../../../../components/InputText';
+import { useTheme } from '../../../../contexts/theme';
 
 const schema = Yup.object().shape({
 	nome: Yup.string().required('Campo obrigatório').min(4, 'No mínimo 4 caracteres'),
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export const ModalEditar: React.FC<Props> = ({ show, setShow, callback }) => {
+	const { theme } = useTheme();
 	const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 	const [loading, setLoading] = useState(false);
 
@@ -46,7 +48,7 @@ export const ModalEditar: React.FC<Props> = ({ show, setShow, callback }) => {
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
-			<View className="flex-1 p-4">
+			<View className="flex-1 p-4" style={{ backgroundColor: theme.background }}>
 				<View className="flex-row space-x-3 flex-1">
 					<Controller
 						name="nome"

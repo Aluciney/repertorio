@@ -5,6 +5,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../../../../dao/MusicaRepertorioDAO';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
+import { useTheme } from '../../../../../contexts/theme';
 
 interface Props {
 	show: boolean;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_repertorio }) => {
+	const { theme } = useTheme();
 	const [loading, setLoading] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const [musicasSelecionadas, setMusicasSelecionadas] = useState<Musica[]>([]);
@@ -72,39 +74,39 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 			animationType="slide"
 			presentationStyle="formSheet"
 		>
-			
-			<View className="flex-row space-x-3 p-4">
-				<View className="flex-1">
-					<TextInput
-						className="border-[1px] rounded-md border-gray-300 text-sm p-2"
-						placeholder="Buscar..."
-						placeholderTextColor="#555"
-						value={search}
-						onChangeText={setSearch}
-						autoFocus
-					/>
-				</View>
-				<TouchableOpacity
-					className={`px-4 flex-row bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
-					onPress={onSubmit}
-					disabled={!(!!musicasSelecionadas.length)}
-				>
-					<MaterialIcons name="add" size={18} color="#FFF" />
-					<Text className="text-white ml-1">Cadastrar</Text>
-				</TouchableOpacity>
-			</View>
 			<FlatList
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
-				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				keyboardShouldPersistTaps="always"
 				automaticallyAdjustKeyboardInsets
 				ItemSeparatorComponent={() => (
-					<View className='h-[1px] w-full bg-gray-300'></View>
+					<View className="h-[1px] w-full bg-zinc-800"></View>
 				)}
-				contentContainerStyle={{
-					paddingBottom: insets.bottom
-				}}
+				stickyHeaderIndices={[0]}
+				ListHeaderComponent={(
+					<View className="flex-row space-x-3 p-4" style={{ backgroundColor: theme.background }}>
+						<View className="flex-1">
+							<TextInput
+								className="border-[1px] rounded-md border-zinc-500 text-sm p-2 text-white"
+								placeholder="Buscar..."
+								placeholderTextColor="#71717a"
+								value={search}
+								onChangeText={setSearch}
+								autoFocus
+							/>
+						</View>
+						<TouchableOpacity
+							className={`px-4 flex-row bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
+							onPress={onSubmit}
+							disabled={!(!!musicasSelecionadas.length)}
+						>
+							<MaterialIcons name="add" size={18} color="#FFF" />
+							<Text className="text-white ml-1">Cadastrar</Text>
+						</TouchableOpacity>
+					</View>
+				)}
+				contentContainerStyle={{ paddingBottom: 10 }}
+				style={{ backgroundColor: theme.background }}
 				renderItem={({ item }) => (
 					<TouchableOpacity
 						className="p-4 flex-row gap-3 items-center"
@@ -113,12 +115,13 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 						{!!musicasSelecionadas.find(music_ => music_.id === item.id) ? (
 							<FontAwesome name="check-square" size={20} color="green" />
 						) : (
-							<FontAwesome name="square-o" size={20} color="black" />
+							<FontAwesome name="square-o" size={20} color="#505050" />
 						)}
-						<Text className="text-lg">{item.nome}</Text>
+						<Text className="text-lg text-white">{item.nome}</Text>
 					</TouchableOpacity>
 				)}
 			/>
+
 		</Modal>
 	);
 };

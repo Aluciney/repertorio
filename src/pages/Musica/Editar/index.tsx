@@ -45,7 +45,7 @@ export const Editar: React.FC = () => {
 			lines.push(
 				<View
 					key={i}
-					className="absolute h-[1px] right-0 left-0 bg-gray-200"
+					className="absolute h-[1px] right-0 left-0 bg-zinc-800"
 					style={{ top: (i + 1) * 14.7, opacity: i === 0 ? 0 : 100 }}
 				/>
 			);
@@ -73,7 +73,7 @@ export const Editar: React.FC = () => {
 			<View className="relative">
 				{createLines(numberOfLines)}
 				<TextInput
-					className="p-4 text-[16px] text-black font-semibold"
+					className="p-4 text-[16px] text-white font-semibold"
 					multiline
 					style={{ fontFamily: 'Courier New' }}
 					autoComplete="off"

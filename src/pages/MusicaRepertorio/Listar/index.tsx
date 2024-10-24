@@ -10,8 +10,10 @@ import { Swipeable } from 'react-native-gesture-handler';
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { InputSearch } from '../../../components/InputSearch';
+import { useTheme } from '../../../contexts/theme';
 
 export const Listar: React.FC = () => {
+	const { theme } = useTheme();
 	const { params } = useRoute();
 	const { id } = params as { id: number; };
 	const tabBarHeight = useBottomTabBarHeight();
@@ -70,22 +72,22 @@ export const Listar: React.FC = () => {
 			return (
 				<Swipeable
 					renderLeftActions={() => renderLeftActions(item.id)}
-					childrenContainerStyle={{ backgroundColor: '#F3F3F3' }}
+					childrenContainerStyle={{ backgroundColor: theme.background }}
 					containerStyle={{ backgroundColor: '#ef4444' }}
 				>
-					<View className={`flex-row ${isActive ? 'bg-blue-100' : ''}`}>
+					<View className={`flex-row ${isActive ? 'bg-zinc-800' : ''}`}>
 						<TouchableOpacity
 							className="p-4 flex-row flex-1 gap-3 items-center"
 							onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
 						>
-							<Ionicons name="musical-notes-outline" size={20} color="black" />
-							<Text className="text-lg">{item.nome}</Text>
+							<Ionicons name="musical-notes-outline" size={20} color="white" />
+							<Text className="text-lg text-white">{item.nome}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							className="justify-center px-4"
 							onLongPress={drag}
 						>
-							<Ionicons name="reorder-four-outline" size={20} color="#00000040" />
+							<Ionicons name="reorder-four-outline" size={20} color="#505050" />
 						</TouchableOpacity>
 					</View>
 				</Swipeable>
@@ -132,22 +134,24 @@ export const Listar: React.FC = () => {
 	}
 
 	return (
-		<View className="flex-1" style={{ paddingBottom: tabBarHeight - 12 }}>
-			<InputSearch
-				value={search}
-				onChangeText={setSearch}
-			/>
+		<View className="flex-1">
 			<DraggableFlatList
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
+				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
-					<View className='h-[1px] w-full bg-gray-300'></View>
+					<View className="h-[1px] w-full bg-zinc-800"></View>
+				)}
+				stickyHeaderIndices={[0]}
+				ListHeaderComponent={(
+					<InputSearch
+						value={search}
+						onChangeText={setSearch}
+					/>
 				)}
 				renderItem={renderItem}
 				onDragEnd={({ data }) => handleUpdateOrdem(data)}
-				contentContainerStyle={{
-					paddingBottom: 10
-				}}
+				contentContainerStyle={{ paddingBottom: 10 }}
 			/>
 			<ModalCadastrar
 				id_repertorio={id}

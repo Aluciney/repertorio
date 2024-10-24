@@ -9,8 +9,10 @@ import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { InputSearch } from '../../../components/InputSearch';
 import { ModalCadastrar } from './components/ModalCadastrar';
 import { MusicaDAO } from '../../../dao/MusicaDAO';
+import { useTheme } from '../../../contexts/theme';
 
 export const Listar: React.FC = () => {
+	const { theme } = useTheme();
 	const [loading, setLoading] = useState(true);
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
@@ -83,33 +85,35 @@ export const Listar: React.FC = () => {
 	const renderItem: ListRenderItem<Musica> = ({ item }) => (
 		<Swipeable
 			renderLeftActions={() => renderLeftActions(item.id)}
-			childrenContainerStyle={{ backgroundColor: '#F3F3F3' }}
+			childrenContainerStyle={{ backgroundColor: theme.background }}
 			containerStyle={{ backgroundColor: '#ef4444' }}
 		>
 			<TouchableOpacity
 				className="p-4 flex-row gap-3 items-center"
 				onPress={() => navigate('MusicaVisualizar', { id: item.id, origem: 'Musica' })}
 			>
-				<Ionicons name="musical-notes-outline" size={20} color="black" />
-				<Text className="text-lg">{item.nome}</Text>
+				<Ionicons name="musical-notes-outline" size={20} color="white" />
+				<Text className="text-lg text-white">{item.nome}</Text>
 			</TouchableOpacity>
 		</Swipeable>
 	);
 
 	return (
 		<View className="flex-1">
-			<InputSearch
-				value={search}
-				onChangeText={setSearch}
-			/>
 			<FlatList<Musica>
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
+				className="h-full"
+				stickyHeaderIndices={[0]}
+				ListHeaderComponent={(
+					<InputSearch
+						value={search}
+						onChangeText={setSearch}
+					/>
+				)}
 				keyExtractor={(item) => item.id.toString()}
-				ItemSeparatorComponent={() => <View className='h-[1px] w-full bg-gray-200'></View>}
+				ItemSeparatorComponent={() => <View className="h-[1px] w-full bg-zinc-800"></View>}
 				renderItem={renderItem}
-				contentContainerStyle={{
-					paddingBottom: 10
-				}}
+				contentContainerStyle={{ paddingBottom: 10 }}
 			/>
 			<ModalCadastrar
 				show={showModalCadastrar}

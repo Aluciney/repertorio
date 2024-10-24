@@ -9,6 +9,7 @@ import { View } from 'react-native';
 
 import { ConfigurarBanco } from './database/iniciar-db';
 import { Routes } from './routes';
+import { ThemeProvider } from './contexts/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,11 +27,13 @@ export const App: React.FC = () => {
 		<GestureHandlerRootView>
 			<ActionSheetProvider>
 				<Host>
-					<View className="flex-1">
-						<StatusBar translucent style="dark" />
-						<Routes />
-						<FlashMessage floating duration={5000} position="bottom" />
-					</View>
+					<ThemeProvider>
+						<View className="flex-1">
+							<StatusBar translucent style="light" />
+							<Routes />
+							<FlashMessage floating duration={5000} position="bottom" />
+						</View>
+					</ThemeProvider>
 				</Host>
 			</ActionSheetProvider>
 		</GestureHandlerRootView>

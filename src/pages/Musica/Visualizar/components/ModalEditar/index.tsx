@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import { InputText } from '../../../../../components/InputText';
 import { Transpor } from '../../../../../utils/Transpor';
 import { MusicaDAO } from '../../../../../dao/MusicaDAO';
+import { useTheme } from '../../../../../contexts/theme';
 
 interface Props {
     musica?: Musica;
@@ -27,6 +28,7 @@ const schema = Yup.object().shape({
 type FormData = Yup.InferType<typeof schema>;
 
 export const ModalEditar: React.FC<Props> = ({ musica, tom, setTom, show, setShow , callback }) => {
+    const { theme } = useTheme();
     const modalizeRef = useRef<Modalize>(null);
     const [loading, setLoading] = useState(false);
     const { control, handleSubmit, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
@@ -84,7 +86,7 @@ export const ModalEditar: React.FC<Props> = ({ musica, tom, setTom, show, setSho
                 useNativeDriver
                 onClose={onCloseModalize}
                 adjustToContentHeight
-                // keyboardShouldPersistTaps="always"
+                modalStyle={{ backgroundColor: theme.background }} 
             >
                 <View className="px-4 pt-4 pb-12">
                     <View className="items-center">

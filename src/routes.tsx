@@ -7,14 +7,22 @@ import { MusicaEditar, MusicaListar, MusicaVisualizar, MusicaReproduzir } from '
 import { MusicaRepertorioListar } from './pages/MusicaRepertorio';
 import { Repertorio } from './pages/Repertorio';
 import { Reproduzir } from './pages/Reproduzir';
+import { useTheme } from './contexts/theme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const Routes: React.FC = () => {
+	const { theme } = useTheme();
 
 	const StackRepertorio = () => (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerStyle: { backgroundColor: theme.background },
+				headerTitleStyle: { color: '#FFF' },
+				contentStyle: { backgroundColor: theme.background }
+			}}
+		>
 			<Stack.Screen
 				name="Repertorio"
 				component={Repertorio}
@@ -44,7 +52,13 @@ export const Routes: React.FC = () => {
 	);
 
 	const StackMusica = () => (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerStyle: { backgroundColor: theme.background },
+				headerTitleStyle: { color: '#FFF' },
+				contentStyle: { backgroundColor: theme.background }
+			}}
+		>
 			<Stack.Screen
 				name="MusicaListar"
 				component={MusicaListar}
@@ -74,8 +88,12 @@ export const Routes: React.FC = () => {
 				screenOptions={({ route }) => ({
 					tabBarStyle: {
 						display: ['MusicaReproduzir', 'Reproduzir'].includes(getFocusedRouteNameFromRoute(route) || '--') ? 'none' : 'flex',
+						backgroundColor: '#101010',
+						borderTopColor: '#252525',
+						borderTopWidth: 1,
 					},
 				})}
+				sceneContainerStyle={{ backgroundColor: theme.background }}
 			>
 				<Tab.Screen
 					name="StackRepertorio"
