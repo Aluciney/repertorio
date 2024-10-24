@@ -3,8 +3,6 @@ import { Alert, FlatList, ListRenderItem, Text, TouchableOpacity, View } from 'r
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
@@ -13,13 +11,11 @@ import { ModalCadastrar } from './components/ModalCadastrar';
 import { MusicaDAO } from '../../../dao/MusicaDAO';
 
 export const Listar: React.FC = () => {
-	const tabBarHeight = useBottomTabBarHeight();
 	const [loading, setLoading] = useState(true);
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 	const [musicas, setMusicas] = useState<Musica[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [search, setSearch] = useState('');
-	const insets = useSafeAreaInsets();
 
 	async function initialLoading() {
 		setLoading(true);
@@ -78,7 +74,7 @@ export const Listar: React.FC = () => {
 	const renderLeftActions = (id: number) => (
 		<TouchableOpacity
 			onPress={() => handlerDeleteMusica(id)}
-			className="bg-red-500 items-center justify-center px-4"
+			className="items-center justify-center px-4"
 		>
 			<Ionicons name="trash-outline" size={22} color="#FFF" />
 		</TouchableOpacity>
@@ -87,6 +83,8 @@ export const Listar: React.FC = () => {
 	const renderItem: ListRenderItem<Musica> = ({ item }) => (
 		<Swipeable
 			renderLeftActions={() => renderLeftActions(item.id)}
+			childrenContainerStyle={{ backgroundColor: '#F3F3F3' }}
+			containerStyle={{ backgroundColor: '#ef4444' }}
 		>
 			<TouchableOpacity
 				className="p-4 flex-row gap-3 items-center"

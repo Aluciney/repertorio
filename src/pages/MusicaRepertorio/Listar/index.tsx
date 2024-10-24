@@ -19,7 +19,7 @@ export const Listar: React.FC = () => {
 	const [musicas, setMusicas] = useState<MusicaRepertorioLista[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
 	const [showModalCadastrar, setShowModalCadastrar] = useState(false);
-	const [search,setSearch] = useState('');
+	const [search, setSearch] = useState('');
 
 	async function initialLoading() {
 		setLoading(true);
@@ -70,6 +70,8 @@ export const Listar: React.FC = () => {
 			return (
 				<Swipeable
 					renderLeftActions={() => renderLeftActions(item.id)}
+					childrenContainerStyle={{ backgroundColor: '#F3F3F3' }}
+					containerStyle={{ backgroundColor: '#ef4444' }}
 				>
 					<View className={`flex-row ${isActive ? 'bg-blue-100' : ''}`}>
 						<TouchableOpacity

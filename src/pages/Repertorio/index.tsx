@@ -94,6 +94,8 @@ export const Repertorio: React.FC = () => {
 			return (
 				<Swipeable
 					renderLeftActions={() => renderLeftActions(item.id)}
+					childrenContainerStyle={{ backgroundColor: '#F3F3F3' }}
+					containerStyle={{ backgroundColor: '#ef4444' }}
 				>
 					<View className={`flex-row ${isActive ? 'bg-blue-100' : ''}`}>
 						<TouchableOpacity
