@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
@@ -13,6 +14,7 @@ import { InputSearch } from '../../../components/InputSearch';
 export const Listar: React.FC = () => {
 	const { params } = useRoute();
 	const { id } = params as { id: number; };
+	const tabBarHeight = useBottomTabBarHeight();
 	const [loading, setLoading] = useState(true);
 	const [musicas, setMusicas] = useState<MusicaRepertorioLista[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();
@@ -128,20 +130,22 @@ export const Listar: React.FC = () => {
 	}
 
 	return (
-		<View>
+		<View className="flex-1" style={{ paddingBottom: tabBarHeight - 12 }}>
 			<InputSearch
 				value={search}
 				onChangeText={setSearch}
 			/>
 			<DraggableFlatList
 				data={musicas.filter(music => music.nome.toLowerCase().includes(search.toLowerCase()))}
-				className="h-full"
 				keyExtractor={item => item.id.toString()}
 				ItemSeparatorComponent={() => (
 					<View className='h-[1px] w-full bg-gray-300'></View>
 				)}
 				renderItem={renderItem}
 				onDragEnd={({ data }) => handleUpdateOrdem(data)}
+				contentContainerStyle={{
+					paddingBottom: 10
+				}}
 			/>
 			<ModalCadastrar
 				id_repertorio={id}

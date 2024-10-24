@@ -99,7 +99,7 @@ export const Listar: React.FC = () => {
 	);
 
 	return (
-		<View style={{ paddingBottom: tabBarHeight - 12 }}>
+		<View className="flex-1">
 			<InputSearch
 				value={search}
 				onChangeText={setSearch}
