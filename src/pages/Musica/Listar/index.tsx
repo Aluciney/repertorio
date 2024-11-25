@@ -89,11 +89,11 @@ export const Listar: React.FC = () => {
 			containerStyle={{ backgroundColor: '#ef4444' }}
 		>
 			<TouchableOpacity
-				className="p-4 flex-row gap-3 items-center"
+				className="p-4 flex-row gap-3 items-center max-w-full"
 				onPress={() => navigate('MusicaVisualizar', { id: item.id, origem: 'Musica' })}
 			>
 				<Ionicons name="musical-notes-outline" size={20} color="white" />
-				<Text className="text-lg text-white">{item.nome}</Text>
+				<Text className="text-lg text-white truncate pr-4" numberOfLines={1}>{item.nome}</Text>
 			</TouchableOpacity>
 		</Swipeable>
 	);

@@ -77,11 +77,11 @@ export const Listar: React.FC = () => {
 				>
 					<View className={`flex-row ${isActive ? 'bg-zinc-800' : ''}`}>
 						<TouchableOpacity
-							className="p-4 flex-row flex-1 gap-3 items-center"
+							className="p-4 flex-row flex-1 gap-3 items-center max-w-full"
 							onPress={() => navigate('MusicaRepertorioVisualizar', { id: item.id_musica, origem: 'MusicaRepertorio' })}
 						>
 							<Ionicons name="musical-notes-outline" size={20} color="white" />
-							<Text className="text-lg text-white">{item.nome}</Text>
+							<Text className="text-lg text-white truncate pr-4" numberOfLines={1}>{item.nome}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							className="justify-center px-4"

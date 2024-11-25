@@ -120,7 +120,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 				style={{ backgroundColor: theme.background }}
 				renderItem={({ item }) => (
 					<TouchableOpacity
-						className="p-4 flex-row gap-3 items-center"
+						className="p-4 flex-row gap-3 items-center max-w-full"
 						onPress={() => toogleSelectMusica(item)}
 					>
 						{!!musicasSelecionadas.find(music_ => music_.id === item.id) ? (
@@ -128,7 +128,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 						) : (
 							<FontAwesome name="square-o" size={20} color="#505050" />
 						)}
-						<Text className="text-lg text-white">{item.nome}</Text>
+						<Text className="text-lg text-white truncate pr-4" numberOfLines={1}>{item.nome}</Text>
 					</TouchableOpacity>
 				)}
 			/>
