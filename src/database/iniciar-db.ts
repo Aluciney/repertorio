@@ -1,7 +1,10 @@
+import { MusicaDAO } from '../dao/MusicaDAO';
 import { up as criarRepertorio } from './migrations/1_criarRepertorio';
 import { up as criarMusica } from './migrations/2_criarMusica';
 import { up as criarBloco } from './migrations/3_criarBloco';
 import { up as criarMusicaRepertorio } from './migrations/4_criarMusicaRepertorio';
+
+import { up as inserirMusicas } from './seeders/inserirMusicas';
 
 export async function ConfigurarBanco() {
 	try {
@@ -28,6 +31,16 @@ export async function ConfigurarBanco() {
 	try {
 		await criarMusicaRepertorio();
 		console.log('---- TABLE: musica_repositorio   ✔️');
+	} catch (error) {
+		console.log('---- TABLE: musica_repositorio   ❌');
+		console.log(error);
+	}
+	try {
+		const musicas = await MusicaDAO.listar();
+		if(musicas.length === 0){
+			await inserirMusicas();
+			console.log('---- DATA: musica                ✔️');
+		}
 	} catch (error) {
 		console.log('---- TABLE: musica_repositorio   ❌');
 		console.log(error);
