@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { MusicaRepertorioDAO } from '../../dao/MusicaRepertorioDAO';
@@ -17,7 +16,6 @@ import { useTheme } from '../../contexts/theme';
 
 export const Repertorio: React.FC = () => {
 	const { theme, layout } = useTheme();
-	const tabBarHeight = useBottomTabBarHeight();
 	const [loading, setLoading] = useState(true);
 	const [repertorios, setRepertorios] = useState<Repertorio[]>([]);
 	const { navigate, setOptions } = useNavigation<any>();

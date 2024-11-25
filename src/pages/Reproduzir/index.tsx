@@ -32,14 +32,14 @@ export const Reproduzir: React.FC = () => {
 	}));
 
 	const toggleView = () => {
-		setVisualizarConfiguracao(!visualizarConfiguracao);
-		if (!visualizarConfiguracao) {
-			opacity.value = withTiming(1, { duration: 200 });
-			translateY.value = withTiming(0, { duration: 200 });
-		} else {
+		if (visualizarConfiguracao) {
 			opacity.value = withTiming(0, { duration: 200 });
 			translateY.value = withTiming(50, { duration: 200 });
+		} else {
+			opacity.value = withTiming(1, { duration: 200 });
+			translateY.value = withTiming(0, { duration: 200 });
 		}
+		setVisualizarConfiguracao(prev => !prev);
 	};
 
 	useEffect(() => {
@@ -90,7 +90,7 @@ export const Reproduzir: React.FC = () => {
 
 	useEffect(() => {
 		setTom(0);
-	},[ordem]);
+	}, [ordem]);
 
 	return (
 		<View className="flex-1 relative bg-black">

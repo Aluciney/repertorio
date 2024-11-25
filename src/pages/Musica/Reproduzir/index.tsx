@@ -31,14 +31,14 @@ export const Reproduzir: React.FC = () => {
 	}));
 
 	const toggleView = () => {
-		setVisualizarConfiguracao(!visualizarConfiguracao);
-		if (!visualizarConfiguracao) {
-			opacity.value = withTiming(1, { duration: 200 });
-			translateY.value = withTiming(0, { duration: 200 });
-		} else {
+		if (visualizarConfiguracao) {
 			opacity.value = withTiming(0, { duration: 200 });
 			translateY.value = withTiming(50, { duration: 200 });
+		} else {
+			opacity.value = withTiming(1, { duration: 200 });
+			translateY.value = withTiming(0, { duration: 200 });
 		}
+		setVisualizarConfiguracao(prev => !prev);
 	};
 
 	useEffect(() => {
@@ -90,20 +90,20 @@ export const Reproduzir: React.FC = () => {
 	return (
 		<View className="flex-1 relative bg-black">
 			<GestureDetector gesture={tabGesture}>
-			<ScrollView
-				scrollEventThrottle={16}
-				contentContainerStyle={{
-					paddingTop: insets.top + 20,
-					paddingBottom: insets.bottom + 80
-				}}
-			>
-				<Text className="px-4 font-bold text-white text-lg mb-4">{musica?.nome}</Text>
-				{linhas.map((linha, index) => (
-					<Text key={index} className="px-4 text-white" style={{ fontFamily: 'Courier New', fontSize: tamanhoFonte }}>
-						{formatarLinhaComNotas(linha)}
-					</Text>
-				))}
-			</ScrollView>
+				<ScrollView
+					scrollEventThrottle={16}
+					contentContainerStyle={{
+						paddingTop: insets.top + 20,
+						paddingBottom: insets.bottom + 80
+					}}
+				>
+					<Text className="px-4 font-bold text-white text-lg mb-4">{musica?.nome}</Text>
+					{linhas.map((linha, index) => (
+						<Text key={index} className="px-4 text-white" style={{ fontFamily: 'Courier New', fontSize: tamanhoFonte }}>
+							{formatarLinhaComNotas(linha)}
+						</Text>
+					))}
+				</ScrollView>
 			</GestureDetector>
 			<Animated.View
 				className="absolute bottom-0 left-3 right-3 space-y-3"

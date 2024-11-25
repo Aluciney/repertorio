@@ -3,7 +3,7 @@ import { Alert, FlatList, ListRenderItem, Text, TouchableOpacity, View } from 'r
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Swipeable } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import { MusicaRepertorioDAO } from '../../../dao/MusicaRepertorioDAO';
 import { InputSearch } from '../../../components/InputSearch';
