@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
@@ -84,7 +84,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 				)}
 				stickyHeaderIndices={[0]}
 				ListHeaderComponent={(
-					<View className="p-4">
+					<View className="p-4" style={{ backgroundColor: theme.background }}>
 						<View className="flex-row justify-end">
 							<TouchableOpacity
 								className={`p-1 items-center justify-center rounded-full border-[1px] border-red-900`}
@@ -94,7 +94,7 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 								<MaterialIcons name="close" size={18} color="#f00" />
 							</TouchableOpacity>
 						</View>
-						<View className="flex-row space-x-3 mt-4" style={{ backgroundColor: theme.background }}>
+						<View className="flex-row space-x-3 mt-4">
 							<View className="flex-1">
 								<TextInput
 									className="border-[1px] rounded-md border-zinc-500 text-sm p-2 text-white"
@@ -132,7 +132,6 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 					</TouchableOpacity>
 				)}
 			/>
-
 		</Modal>
 	);
 };
