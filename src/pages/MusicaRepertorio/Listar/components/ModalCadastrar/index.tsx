@@ -84,25 +84,36 @@ export const ModalCadastrar: React.FC<Props> = ({ show, setShow, callback, id_re
 				)}
 				stickyHeaderIndices={[0]}
 				ListHeaderComponent={(
-					<View className="flex-row space-x-3 p-4" style={{ backgroundColor: theme.background }}>
-						<View className="flex-1">
-							<TextInput
-								className="border-[1px] rounded-md border-zinc-500 text-sm p-2 text-white"
-								placeholder="Buscar..."
-								placeholderTextColor="#71717a"
-								value={search}
-								onChangeText={setSearch}
-								autoFocus
-							/>
+					<View className="p-4">
+						<View className="flex-row justify-end">
+							<TouchableOpacity
+								className={`p-1 items-center justify-center rounded-full border-[1px] border-red-900`}
+								onPress={() => setShow(false)}
+								disabled={loading}
+							>
+								<MaterialIcons name="close" size={18} color="#f00" />
+							</TouchableOpacity>
 						</View>
-						<TouchableOpacity
-							className={`px-4 flex-row bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
-							onPress={onSubmit}
-							disabled={!(!!musicasSelecionadas.length)}
-						>
-							<MaterialIcons name="add" size={18} color="#FFF" />
-							<Text className="text-white ml-1">Cadastrar</Text>
-						</TouchableOpacity>
+						<View className="flex-row space-x-3 mt-4" style={{ backgroundColor: theme.background }}>
+							<View className="flex-1">
+								<TextInput
+									className="border-[1px] rounded-md border-zinc-500 text-sm p-2 text-white"
+									placeholder="Buscar..."
+									placeholderTextColor="#71717a"
+									value={search}
+									onChangeText={setSearch}
+									autoFocus
+								/>
+							</View>
+							<TouchableOpacity
+								className={`px-4 flex-row bg-green-500 items-center justify-center rounded-md h-[35px] ${!(!!musicasSelecionadas.length) ? 'opacity-60' : ''}`}
+								onPress={onSubmit}
+								disabled={!(!!musicasSelecionadas.length)}
+							>
+								<MaterialIcons name="add" size={18} color="#FFF" />
+								<Text className="text-white ml-1">Cadastrar</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				)}
 				contentContainerStyle={{ paddingBottom: 10 }}

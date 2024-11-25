@@ -49,6 +49,15 @@ export const ModalEditar: React.FC<Props> = ({ show, setShow, callback }) => {
 			presentationStyle="formSheet"
 		>
 			<View className="flex-1 p-4" style={{ backgroundColor: theme.background }}>
+				<View className="flex-row justify-end">
+					<TouchableOpacity
+						className={`p-1 items-center justify-center rounded-full border-[1px] border-red-900`}
+						onPress={() => setShow(undefined)}
+						disabled={loading}
+					>
+						<MaterialIcons name="close" size={18} color="#f00" />
+					</TouchableOpacity>
+				</View>
 				<View className="flex-row space-x-3 flex-1">
 					<Controller
 						name="nome"
